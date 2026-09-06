@@ -1,5 +1,11 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Kitchen List</title>
 <meta name="robots" content="noindex, nofollow">
+<meta name="color-scheme" content="light dark">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Karla:wght@400;500;600&display=swap">
 <style>
 :root{
@@ -31,8 +37,9 @@
   --accent-soft:#3A2431; --yes:#7FCB9A; --yes-soft:#1F3A2A; --no:#D9A56A; --no-soft:#3A2E1F; --focus:#E38FB4;
 }
 *{box-sizing:border-box}
-body{margin:0;background:var(--ground);color:var(--ink);font:16px/1.45 Karla,"Helvetica Neue",Arial,sans-serif;-webkit-text-size-adjust:100%}
-main{max-width:640px;margin:0 auto;padding:20px 16px 120px}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--ground);color:var(--ink);font:17px/1.45 Karla,"Helvetica Neue",Arial,sans-serif}
+main{max-width:640px;margin:0 auto;padding:20px 16px 130px}
 h1,h2,h3{font-family:Fraunces,Georgia,serif;text-wrap:balance;margin:0;font-weight:600}
 h1{font-size:34px;line-height:1.1;letter-spacing:-.01em}
 h2{font-size:22px;line-height:1.2}
@@ -41,49 +48,59 @@ p{margin:0}
 .sub{color:var(--muted);margin-top:6px}
 header{display:flex;flex-direction:column;gap:6px;margin-bottom:22px}
 section{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px 16px;margin-bottom:14px;display:flex;flex-direction:column;gap:14px}
-.hint{color:var(--muted);font-size:14px}
-.chips{display:flex;flex-wrap:wrap;gap:8px}
-.chip{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:9px 14px;font:inherit;font-size:15px;cursor:pointer;line-height:1.1}
+.hint{color:var(--muted);font-size:15px}
+.chips{display:flex;flex-wrap:wrap;gap:10px}
+.chip{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:12px 18px;min-height:46px;font:inherit;font-size:17px;cursor:pointer;line-height:1.1;touch-action:manipulation}
 .chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
-textarea,input[type=text],select{width:100%;font:inherit;font-size:16px;color:var(--ink);background:var(--surface2);border:1px solid var(--line);border-radius:10px;padding:11px 12px}
-textarea{min-height:88px;resize:vertical}
+textarea,input[type=text],select{width:100%;font:inherit;font-size:17px;color:var(--ink);background:var(--surface2);border:1px solid var(--line);border-radius:10px;padding:13px 14px;min-height:48px}
+textarea{min-height:100px;resize:vertical}
 :is(button,textarea,input,select,a):focus-visible{outline:2px solid var(--focus);outline-offset:2px}
-.days{display:flex;flex-direction:column;gap:8px}
+.days{display:flex;flex-direction:column;gap:10px}
 .day{display:grid;grid-template-columns:78px 1fr 1fr;gap:8px;align-items:center}
-.day .lbl{font-weight:600;font-size:15px}
-.day .lbl small{display:block;color:var(--muted);font-weight:400;font-size:13px}
-.day select{padding:9px 8px;font-size:15px}
+.day .lbl{font-weight:600;font-size:16px}
+.day .lbl small{display:block;color:var(--muted);font-weight:400;font-size:14px}
+.day select{padding:12px 10px;font-size:16px}
 .dayhead{display:grid;grid-template-columns:78px 1fr 1fr;gap:8px;color:var(--muted);font-size:13px;text-transform:uppercase;letter-spacing:.06em}
 .group{display:flex;flex-direction:column;gap:6px}
 .group h3{margin-top:6px}
-.item{display:grid;grid-template-columns:1fr auto;gap:8px 10px;align-items:center;padding:8px 0;border-top:1px solid var(--line)}
+.item{display:grid;grid-template-columns:1fr auto;gap:6px 10px;align-items:center;padding:12px 0;border-top:1px solid var(--line)}
 .item:first-of-type{border-top:0}
-.item .name{font-size:15px;line-height:1.3}
-.item .price{color:var(--muted);font-size:13px;font-variant-numeric:tabular-nums}
+.item .name{font-size:16px;line-height:1.3}
+.item .price{color:var(--muted);font-size:14px;font-variant-numeric:tabular-nums}
 .item .price a{color:var(--muted)}
 .item.retired .name{text-decoration:line-through;color:var(--muted)}
 .seg{display:inline-flex;border:1px solid var(--line);border-radius:999px;overflow:hidden}
-.seg button{font:inherit;font-size:14px;padding:8px 12px;border:0;background:var(--surface);color:var(--muted);cursor:pointer;border-left:1px solid var(--line)}
+.seg button{font:inherit;font-size:16px;padding:0 16px;min-height:46px;border:0;background:var(--surface);color:var(--muted);cursor:pointer;border-left:1px solid var(--line);touch-action:manipulation}
 .seg button:first-child{border-left:0}
 .seg button[aria-pressed="true"].no{background:var(--no-soft);color:var(--no);font-weight:600}
 .seg button[aria-pressed="true"].yes{background:var(--yes-soft);color:var(--yes);font-weight:600}
 .seg button[aria-pressed="true"].more{background:var(--accent);color:var(--accent-ink);font-weight:600}
-.tiny{background:none;border:0;color:var(--muted);font:inherit;font-size:13px;padding:0;cursor:pointer;text-decoration:underline;text-underline-offset:2px;justify-self:start}
+.tiny{background:none;border:0;color:var(--muted);font:inherit;font-size:14px;padding:10px 0;cursor:pointer;text-decoration:underline;text-underline-offset:2px;justify-self:start;min-height:44px}
 .addrow{display:flex;gap:8px}
 .addrow input{flex:1}
-.btn{font:inherit;font-size:15px;font-weight:600;border-radius:10px;padding:11px 16px;border:1px solid var(--line);background:var(--surface2);color:var(--ink);cursor:pointer;white-space:nowrap}
+.btn{font:inherit;font-size:17px;font-weight:600;border-radius:10px;padding:13px 18px;min-height:48px;border:1px solid var(--line);background:var(--surface2);color:var(--ink);cursor:pointer;white-space:nowrap;touch-action:manipulation}
 .btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
 ul.plain{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
-ul.plain li{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:8px 12px;background:var(--surface2);border-radius:10px;font-size:15px}
+ul.plain li{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:6px 14px;background:var(--surface2);border-radius:10px;font-size:16px}
 .bar{position:fixed;left:0;right:0;bottom:0;background:var(--surface);border-top:1px solid var(--line);padding:12px 16px calc(12px + env(safe-area-inset-bottom))}
 .bar .in{max-width:640px;margin:0 auto;display:flex;gap:10px;align-items:center;justify-content:space-between}
-.bar .status{color:var(--muted);font-size:13px}
+.bar .status{color:var(--muted);font-size:14px}
 .bar .btn{flex:0 0 auto}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-@media (max-width:420px){.two{grid-template-columns:1fr}.day{grid-template-columns:64px 1fr 1fr}}
+@media (max-width:520px){.two{grid-template-columns:1fr}.day{grid-template-columns:64px 1fr 1fr}.dayhead{grid-template-columns:64px 1fr 1fr}.bar .status{display:none}.bar .in{justify-content:stretch}.bar .in>span.actions{flex:1;display:flex;gap:10px}.bar .btn{flex:1}}
+/* folded sections */
+details.fold{background:var(--surface);border:1px solid var(--line);border-radius:14px;margin-bottom:14px}
+details.fold>summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:16px;min-height:56px;font-family:Fraunces,Georgia,serif;font-weight:600;font-size:20px}
+details.fold>summary::-webkit-details-marker{display:none}
+details.fold>summary .meta{font-family:Karla,sans-serif;font-weight:400;font-size:15px;color:var(--muted);display:flex;align-items:center;gap:8px;white-space:nowrap}
+details.fold>summary .chev{display:inline-block;width:10px;height:10px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(45deg);transition:transform .15s;margin-top:-4px}
+details.fold[open]>summary .chev{transform:rotate(-135deg);margin-top:4px}
+details.fold>.body{padding:0 16px 18px;display:flex;flex-direction:column;gap:14px}
+details.fold>.body .hint{margin-top:-4px}
 @media (prefers-reduced-motion:no-preference){.chip,.seg button{transition:background .12s,color .12s}}
 </style>
-
+</head>
+<body>
 <main>
   <header>
     <h1>Kitchen List</h1>
@@ -108,18 +125,22 @@ ul.plain li{display:flex;justify-content:space-between;gap:10px;align-items:cent
     </div>
   </section>
 
-  <section>
-    <h2>Day by day</h2>
-    <p class="hint">Only if you feel like planning. Leave blank and it's fine.</p>
-    <div class="dayhead"><span></span><span>Breakfast</span><span>Dinner</span></div>
-    <div class="days" id="days"></div>
-  </section>
+  <details class="fold" id="daysFold">
+    <summary>Plan the days <span class="meta"><span id="daysMeta">optional</span><span class="chev"></span></span></summary>
+    <div class="body">
+      <p class="hint">Only if you feel like planning. Leave blank and it's fine.</p>
+      <div class="dayhead"><span></span><span>Breakfast</span><span>Dinner</span></div>
+      <div class="days" id="days"></div>
+    </div>
+  </details>
 
-  <section>
-    <h2>Starting list</h2>
-    <p class="hint"><strong>Yes</strong> means put it in. <strong>Extra</strong> means more than one. <strong>No</strong> means skip it this time. Leave it blank and Eric decides.</p>
-    <div id="items"></div>
-  </section>
+  <details class="fold" id="itemsFold">
+    <summary>See the usual list <span class="meta"><span id="itemsMeta">optional</span><span class="chev"></span></span></summary>
+    <div class="body">
+      <p class="hint"><strong>Yes</strong> means put it in. <strong>Extra</strong> means more than one. <strong>No</strong> means skip it this time. Leave it blank and Eric decides.</p>
+      <div id="items"></div>
+    </div>
+  </details>
 
   <section>
     <h2>Add something</h2>
@@ -143,18 +164,20 @@ ul.plain li{display:flex;justify-content:space-between;gap:10px;align-items:cent
     </div>
   </section>
 
-  <section>
-    <h2>What I like, in general</h2>
-    <p class="hint">These stick around week to week.</p>
-    <div class="chips" id="prefs"></div>
-    <textarea id="prefsText" placeholder="Anything else that's always true. Foods you love, foods you're done with, how you like lunch to go."></textarea>
-  </section>
+  <details class="fold" id="prefsFold">
+    <summary>What I like, in general <span class="meta"><span id="prefsMeta">optional</span><span class="chev"></span></span></summary>
+    <div class="body">
+      <p class="hint">These stick around week to week.</p>
+      <div class="chips" id="prefs"></div>
+      <textarea id="prefsText" placeholder="Anything else that's always true. Foods you love, foods you're done with, how you like lunch to go."></textarea>
+    </div>
+  </details>
 </main>
 
 <div class="bar">
   <div class="in">
     <span class="status" id="status">Saved on this phone</span>
-    <span style="display:flex;gap:8px">
+    <span class="actions" style="display:flex;gap:8px">
       <button class="btn" id="copy">Copy</button>
       <button class="btn primary" id="send">Send to Eric</button>
     </span>
@@ -216,7 +239,17 @@ const KEY = "kitchen-list-v1";
 let S = load();
 function blank(){return {moods:[],weekText:"",daysText:"",days:{},picks:{},retired:[],newItems:[],out:[],tryList:[],prefs:[],prefsText:"",sentAt:null,weekStart:null};}
 function load(){ try{const r=localStorage.getItem(KEY); if(r){return Object.assign(blank(),JSON.parse(r));}}catch(e){} return blank(); }
-let saveT; function save(){ try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){} const st=document.getElementById("status"); st.textContent="Saved on this phone"; }
+let saveT; function save(){ try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){} const st=document.getElementById("status"); st.textContent="Saved on this phone"; metas(); }
+function metas(){
+  const n=(id,t)=>{const e=document.getElementById(id); if(e) e.textContent=t;};
+  const dayCount=Object.values(S.days||{}).filter(c=>c&&(c.breakfast||c.dinner)).length;
+  n("daysMeta", dayCount?dayCount+(dayCount===1?" day set":" days set"):"optional");
+  const picks=Object.entries(S.picks||{}).filter(([id,v])=>v&&!S.retired.includes(id)).length;
+  n("itemsMeta", picks?picks+" picked":"optional");
+  const pf=(S.prefs||[]).length+((S.prefsText||"").trim()?1:0);
+  n("prefsMeta", pf?"saved":"optional");
+}
+["daysFold","itemsFold","prefsFold"].forEach(id=>{const d=document.getElementById(id); if(!d) return; try{ if(sessionStorage.getItem("open:"+id)==="1") d.open=true; }catch(e){} d.addEventListener("toggle",()=>{ try{sessionStorage.setItem("open:"+id,d.open?"1":"0");}catch(e){} });});
 
 const weekDays = (()=>{const out=[]; const d=new Date(); for(let i=0;i<7;i++){const x=new Date(d); x.setDate(d.getDate()+i); out.push(x);} return out;})();
 const fmtDay = d=>({dow:d.toLocaleDateString("en-US",{weekday:"short"}), md:(d.getMonth()+1)+"/"+d.getDate(), key:d.toISOString().slice(0,10)});
@@ -324,5 +357,8 @@ wireAdd("newItem","addItem","newItems","newItems");
 wireAdd("outItem","addOut","outItems","out");
 wireAdd("tryItem","addTry","tryItems","tryList");
 wireText("weekText","weekText"); wireText("daysText","daysText"); wireText("prefsText","prefsText");
+metas();
 if(S.sentAt){ document.getElementById("status").textContent="Last sent "+new Date(S.sentAt).toLocaleDateString("en-US",{month:"short",day:"numeric"}); }
 </script>
+</body>
+</html>

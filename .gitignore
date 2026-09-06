@@ -1,0 +1,8 @@
+# Deny-by-default. Nothing goes to GitHub unless it is named below.
+# This repo is PUBLIC (GitHub free plan cannot serve Pages from a private repo),
+# so anything committed here is readable by anyone who finds the repo.
+# Added 2026-09-06.
+
+*
+!.gitignore
+!index.html

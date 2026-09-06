@@ -63,6 +63,11 @@ textarea{min-height:88px;resize:vertical}
 .dayhead{display:grid;grid-template-columns:78px 1fr 1fr;gap:8px;color:var(--muted);font-size:13px;text-transform:uppercase;letter-spacing:.06em}
 .group{display:flex;flex-direction:column;gap:6px}
 .group h3{margin-top:6px}
+/* the grocery section headers: they were disappearing as small grey caps */
+#items .group{gap:0}
+#items .group h3{position:sticky;top:0;z-index:2;margin:18px -16px 0;padding:10px 16px 8px;background:var(--surface);border-bottom:2px solid var(--accent);font-family:Fraunces,Georgia,serif;font-size:20px;font-weight:600;letter-spacing:normal;text-transform:none;color:var(--ink);display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+#items .group:first-child h3{margin-top:0}
+#items .group h3 .n{font-family:Karla,sans-serif;font-size:14px;font-weight:400;color:var(--muted);white-space:nowrap}
 .item{display:grid;grid-template-columns:1fr auto;gap:6px 10px;align-items:center;padding:12px 0;border-top:1px solid var(--line)}
 .item:first-of-type{border-top:0}
 .item .name{font-size:16px;line-height:1.3}
@@ -446,7 +451,8 @@ function renderItems(){
   const q=QUERY.trim().toLowerCase(); let shown=0;
   ITEMS.forEach(([group,rows])=>{
     const sorted=rows.slice().sort((a,b)=>(b.times||0)-(a.times||0)||a.n.localeCompare(b.n));
-    const g=el("div",{class:"group"},el("h3",{text:group})); let any=false;
+    const head=el("h3",{},el("span",{text:group}),el("span",{class:"n"}));
+    const g=el("div",{class:"group"},head); let any=false;
     sorted.forEach(r=>{
       const {id,n:name,price,az,times}=r;
       if(q && !(name.toLowerCase().includes(q) || (r.short||"").toLowerCase().includes(q))) return;
@@ -466,7 +472,11 @@ function renderItems(){
       row.append(left,retired?el("span"):seg,tiny);
       g.append(row);
     });
-    if(any) box.append(g);
+    if(any){
+      const ins=sorted.filter(r=>!S.retired.includes(r.id)&&(S.picks[r.id]==="yes"||S.picks[r.id]==="more")).length;
+      head.querySelector(".n").textContent = ins + " in";
+      box.append(g);
+    }
   });
   if(q && !shown){
     const raw=QUERY.trim();

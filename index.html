@@ -98,6 +98,19 @@ details.fold[open]>summary .chev{transform:rotate(-135deg);margin-top:4px}
 details.fold>.body{padding:0 16px 18px;display:flex;flex-direction:column;gap:14px}
 details.fold>.body .hint{margin-top:-4px}
 @media (prefers-reduced-motion:no-preference){.chip,.seg button{transition:background .12s,color .12s}}
+/* search + last order */
+.search{position:relative}
+.search input{padding-left:40px}
+.search svg{position:absolute;left:13px;top:50%;transform:translateY(-50%);width:18px;height:18px;color:var(--muted);pointer-events:none}
+.search .clr{position:absolute;right:6px;top:50%;transform:translateY(-50%);min-height:40px;padding:0 12px}
+.empty{color:var(--muted);font-size:15px;display:flex;flex-direction:column;gap:10px;align-items:flex-start}
+.item .count{color:var(--muted);font-size:13px}
+.lastrow{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.lastrow .hint{flex:1;min-width:160px}
+ul.lastlist{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:6px 14px;font-size:15px}
+ul.lastlist li{display:flex;justify-content:space-between;gap:8px;padding:6px 0;border-bottom:1px solid var(--line)}
+ul.lastlist li b{font-weight:600;color:var(--muted);white-space:nowrap}
+@media (max-width:520px){ul.lastlist{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -134,10 +147,26 @@ details.fold>.body .hint{margin-top:-4px}
     </div>
   </details>
 
+  <details class="fold" id="lastFold">
+    <summary>Last order <span class="meta"><span id="lastMeta"></span><span class="chev"></span></span></summary>
+    <div class="body">
+      <div class="lastrow">
+        <p class="hint" id="lastHint"></p>
+        <button class="btn" type="button" id="sameAgain">Same as last time</button>
+      </div>
+      <ul class="lastlist" id="lastList"></ul>
+    </div>
+  </details>
+
   <details class="fold" id="itemsFold">
     <summary>See the usual list <span class="meta"><span id="itemsMeta">optional</span><span class="chev"></span></span></summary>
     <div class="body">
-      <p class="hint"><strong>Yes</strong> means put it in. <strong>Extra</strong> means more than one. <strong>No</strong> means skip it this time. Leave it blank and Eric decides.</p>
+      <div class="search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input type="search" id="itemSearch" placeholder="Search the list" autocomplete="off" aria-label="Search the list">
+        <button class="tiny clr" type="button" id="itemSearchClear" hidden>clear</button>
+      </div>
+      <p class="hint"><strong>Yes</strong> means put it in. <strong>Extra</strong> means more than one. <strong>No</strong> means skip it this time. Leave it blank and Eric decides. Things you buy most sit at the top.</p>
       <div id="items"></div>
     </div>
   </details>
@@ -190,56 +219,66 @@ const MOODS = ["Comfort food","Light and fresh","Quick and easy","Cook a real me
 const PREFS = ["Protein and veggie lunches","Light on bread and carbs","Organic when there's a choice","Spicy is good","Less sugar","More fish","More chicken","No red meat","Dairy is fine","Snacks please"];
 const BREAKFAST = ["","Eggs","Yogurt and fruit","Waffles","Pancake bites","Breakfast sandwich","Smoothie","Oatmeal","Skip / out"];
 const DINNER = ["","Chicken","Ground turkey","Pasta","Tacos","Salad bowl","Fish","Soup","Ravioli","Leftovers","Out / covered"];
+// ==== DATA, edited after each order. Row: [id, name, price, amazonId, timesOrdered] ====
 const ITEMS = [
  ["Produce",[
-  ["p1","Organicgirl Baby Spinach, 5 oz","$4.79",""],
-  ["p2","Organic Gold Kiwi, 1 lb","$6.99","B079JMTDH4"],
-  ["p3","Organic Fuji Apple","$2.99/lb","B000YTXXDI"],
-  ["p4","Organic Banana","$0.79/lb","B0787Y4V6T"],
-  ["p5","Organic Sweet Potato","$2.99/lb","B07FZKXQT2"],
-  ["p6","Organic Red Pear","$2.49/lb","B0787Y4DR1"],
-  ["p7","Organic Red Seedless Grapes","$2.99/lb",""],
-  ["p8","Organic Butternut Squash","$1.99/lb","B002QY3U5A"],
-  ["p9","Organic White Peach","$4.99/lb","B003TQ8EPK"],
-  ["p10","Organic Yellow Nectarine","$3.99/lb","B003TQ6IY4"],
-  ["p11","Organic Blueberries, pint","$5.99","B077N7TR5G"],
-  ["p12","Large Organic Hass Avocado","$2.99 each","B0014GLSE6"],
-  ["p13","Organic Keitt Mango","$3.33 each",""]]],
+  ["p1","Organicgirl Baby Spinach, 5 oz","$4.79","",1],
+  ["p2","Organic Gold Kiwi, 1 lb","$6.99","B079JMTDH4",1],
+  ["p3","Organic Fuji Apple","$2.99/lb","B000YTXXDI",1],
+  ["p4","Organic Banana","$0.79/lb","B0787Y4V6T",1],
+  ["p5","Organic Sweet Potato","$2.99/lb","B07FZKXQT2",1],
+  ["p6","Organic Red Pear","$2.49/lb","B0787Y4DR1",1],
+  ["p7","Organic Red Seedless Grapes","$2.99/lb","",1],
+  ["p8","Organic Butternut Squash","$1.99/lb","B002QY3U5A",1],
+  ["p9","Organic White Peach","$4.99/lb","B003TQ8EPK",1],
+  ["p10","Organic Yellow Nectarine","$3.99/lb","B003TQ6IY4",1],
+  ["p11","Organic Blueberries, pint","$5.99","B077N7TR5G",1],
+  ["p12","Large Organic Hass Avocado","$2.99 each","B0014GLSE6",1],
+  ["p13","Organic Keitt Mango","$3.33 each","",1]]],
  ["Protein",[
-  ["m1","Bell & Evans Organic Chicken Breast Tenderloin","$9.99/lb","B08538NWFT"],
-  ["m2","Kochs Organic Ground Turkey, 16 oz","$8.49","B078DF8PZ8"],
-  ["m3","Country Hen Organic Large Eggs, 6 ct","$5.99","B00G8UA91Q"],
-  ["m4","Wellshire Uncured Turkey Bacon, 3 oz","$7.49","B074VBLKL9"],
-  ["m5","Amylu Chicken Sausage Breakfast Patties, 12 oz","$6.99","B0DXVYNSCN"],
-  ["m6","Mason Dixie Cheddar Sausage Breakfast Sandwich","$4.49 each",""]]],
+  ["m1","Bell & Evans Organic Chicken Breast Tenderloin","$9.99/lb","B08538NWFT",1],
+  ["m2","Kochs Organic Ground Turkey, 16 oz","$8.49","B078DF8PZ8",1],
+  ["m3","Country Hen Organic Large Eggs, 6 ct","$5.99","B00G8UA91Q",1],
+  ["m4","Wellshire Uncured Turkey Bacon, 3 oz","$7.49","B074VBLKL9",1],
+  ["m5","Amylu Chicken Sausage Breakfast Patties, 12 oz","$6.99","B0DXVYNSCN",1],
+  ["m6","Mason Dixie Cheddar Sausage Breakfast Sandwich","$4.49 each","",1]]],
  ["Dairy and cheese",[
-  ["d1","Fage Total 2% Greek Yogurt, 5.3 oz","$1.99 each","B000VR81IA"],
-  ["d2","Icelandic Provisions Skyr, Strawberries & Cream","$2.09 each","B0CC43K5YZ"],
-  ["d3","Whole Foods Organic Fresh Goat Cheese, 4 oz","$5.99","B074H64BVD"],
-  ["d4","Tillamook Cheddar Bar, 8 oz","$5.29","B07PJTJW7H"]]],
+  ["d1","Fage Total 2% Greek Yogurt, 5.3 oz","$1.99 each","B000VR81IA",1],
+  ["d2","Icelandic Provisions Skyr, Strawberries & Cream","$2.09 each","B0CC43K5YZ",1],
+  ["d3","Whole Foods Organic Fresh Goat Cheese, 4 oz","$5.99","B074H64BVD",1],
+  ["d4","Tillamook Cheddar Bar, 8 oz","$5.29","B07PJTJW7H",1]]],
  ["Frozen",[
-  ["f1","365 Organic Sweet Dark Cherries, 10 oz","$4.59","B074H57SNZ"],
-  ["f2","365 Organic Sliced Peaches, 10 oz","$4.39","B074J5TWDV"],
-  ["f3","Birch Benders Protein Toaster Waffles, 6 ct","$7.79","B09XYWQPWZ"],
-  ["f4","365 Original Pancake Bites, 10.8 oz","$3.49","B07YHG39KZ"]]],
+  ["f1","365 Organic Sweet Dark Cherries, 10 oz","$4.59","B074H57SNZ",1],
+  ["f2","365 Organic Sliced Peaches, 10 oz","$4.39","B074J5TWDV",1],
+  ["f3","Birch Benders Protein Toaster Waffles, 6 ct","$7.79","B09XYWQPWZ",1],
+  ["f4","365 Original Pancake Bites, 10.8 oz","$3.49","B07YHG39KZ",1]]],
  ["Pantry and bread",[
-  ["b1","Carbone Alfredo Pasta Sauce, 15 oz","$8.99","B0D82BQT4Q"],
-  ["b2","Artisola Organic Portabella Mushroom Ravioli, 8 oz","$6.29","B078B9JPN3"],
-  ["b3","365 Organic Black Beans, 15 oz","$1.59","B074H6QVKY"],
-  ["b4","La Tortilla Factory Organic Tortillas, 6 ct","$4.99",""],
-  ["b5","Whole Foods Ancient Grains Half Loaf","$2.99",""],
-  ["b6","365 Organic Dark Maple Syrup, 12 fl oz","$6.99","B074H5CN2X"],
-  ["b7","Aurora Organic Medjool Dates, 10 oz","$8.49","B079VRDC85"],
-  ["b8","Lakewood Organic Pure Apple Juice, 32 oz","$8.99","B001BKNGHW"],
-  ["b9","Whole Foods Chocolate Chip Mini Muffins, 12 ct","$5.49","B094JPCXC4"]]]
+  ["b1","Carbone Alfredo Pasta Sauce, 15 oz","$8.99","B0D82BQT4Q",1],
+  ["b2","Artisola Organic Portabella Mushroom Ravioli, 8 oz","$6.29","B078B9JPN3",1],
+  ["b3","365 Organic Black Beans, 15 oz","$1.59","B074H6QVKY",1],
+  ["b4","La Tortilla Factory Organic Tortillas, 6 ct","$4.99","",1],
+  ["b5","Whole Foods Ancient Grains Half Loaf","$2.99","",1],
+  ["b6","365 Organic Dark Maple Syrup, 12 fl oz","$6.99","B074H5CN2X",1],
+  ["b7","Aurora Organic Medjool Dates, 10 oz","$8.49","B079VRDC85",1],
+  ["b8","Lakewood Organic Pure Apple Juice, 32 oz","$8.99","B001BKNGHW",1],
+  ["b9","Whole Foods Chocolate Chip Mini Muffins, 12 ct","$5.49","B094JPCXC4",1]]]
 ];
+const LAST_ORDER = {
+  placed:"2026-09-05", delivered:"2026-09-06",
+  qty:{p1:1,p2:1,p3:1,p4:5,p5:2,p6:1,p7:1,p8:1,p9:1,p10:1,p11:1,p12:2,p13:2,
+       m1:1,m2:1,m3:1,m4:1,m5:1,m6:2,
+       d1:2,d2:2,d3:1,d4:1,
+       f1:1,f2:1,f3:1,f4:1,
+       b1:1,b2:1,b3:1,b4:1,b5:1,b6:1,b7:1,b8:1,b9:1}
+};
+// ==== end DATA ====
 const NAMES = {}; ITEMS.forEach(([g,rows])=>rows.forEach(r=>NAMES[r[0]]=r[1]));
 
 const KEY = "kitchen-list-v1";
 let S = load();
-function blank(){return {moods:[],weekText:"",daysText:"",days:{},picks:{},retired:[],newItems:[],out:[],tryList:[],prefs:[],prefsText:"",sentAt:null,weekStart:null};}
+function blank(){return {moods:[],weekText:"",daysText:"",days:{},picks:{},retired:[],newItems:[],out:[],tryList:[],prefs:[],prefsText:"",sentAt:null,weekStart:null,fromLast:null};}
 function load(){ try{const r=localStorage.getItem(KEY); if(r){return Object.assign(blank(),JSON.parse(r));}}catch(e){} return blank(); }
-let saveT; function save(){ try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){} const st=document.getElementById("status"); st.textContent="Saved on this phone"; metas(); }
+let saveT; function save(){ try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){} const st=document.getElementById("status"); st.textContent="Saved on this phone"; metas(); if(typeof renderLast==="function") renderLast(); }
 function metas(){
   const n=(id,t)=>{const e=document.getElementById(id); if(e) e.textContent=t;};
   const dayCount=Object.values(S.days||{}).filter(c=>c&&(c.breakfast||c.dinner)).length;
@@ -249,7 +288,7 @@ function metas(){
   const pf=(S.prefs||[]).length+((S.prefsText||"").trim()?1:0);
   n("prefsMeta", pf?"saved":"optional");
 }
-["daysFold","itemsFold","prefsFold"].forEach(id=>{const d=document.getElementById(id); if(!d) return; try{ if(sessionStorage.getItem("open:"+id)==="1") d.open=true; }catch(e){} d.addEventListener("toggle",()=>{ try{sessionStorage.setItem("open:"+id,d.open?"1":"0");}catch(e){} });});
+["daysFold","lastFold","itemsFold","prefsFold"].forEach(id=>{const d=document.getElementById(id); if(!d) return; try{ if(sessionStorage.getItem("open:"+id)==="1") d.open=true; }catch(e){} d.addEventListener("toggle",()=>{ try{sessionStorage.setItem("open:"+id,d.open?"1":"0");}catch(e){} });});
 
 const weekDays = (()=>{const out=[]; const d=new Date(); for(let i=0;i<7;i++){const x=new Date(d); x.setDate(d.getDate()+i); out.push(x);} return out;})();
 const fmtDay = d=>({dow:d.toLocaleDateString("en-US",{weekday:"short"}), md:(d.getMonth()+1)+"/"+d.getDate(), key:d.toISOString().slice(0,10)});
@@ -279,16 +318,22 @@ function renderDays(){
   });
 }
 
+let QUERY="";
 function renderItems(){
   const box=document.getElementById("items"); box.replaceChildren();
+  const q=QUERY.trim().toLowerCase(); let shown=0;
   ITEMS.forEach(([group,rows])=>{
-    const g=el("div",{class:"group"},el("h3",{text:group}));
-    rows.forEach(([id,name,price,asin])=>{
+    const sorted=rows.slice().sort((a,b)=>(b[4]||0)-(a[4]||0)||a[1].localeCompare(b[1]));
+    const g=el("div",{class:"group"},el("h3",{text:group})); let any=false;
+    sorted.forEach(([id,name,price,asin,n])=>{
+      if(q && !name.toLowerCase().includes(q)) return;
+      any=true; shown++;
       const retired=S.retired.includes(id); const pick=S.picks[id]||"";
       const row=el("div",{class:"item"+(retired?" retired":"")});
       const left=el("div"); left.append(el("div",{class:"name",text:name}));
       const pr=el("div",{class:"price"}); pr.append(document.createTextNode(price));
       if(asin){ pr.append(document.createTextNode("  ")); pr.append(el("a",{href:"https://www.amazon.com/dp/"+asin,target:"_blank",rel:"noopener",text:"see it"})); }
+      if(n>1){ pr.append(document.createTextNode("  ")); pr.append(el("span",{class:"count",text:"ordered "+n+"x"})); }
       left.append(pr);
       const seg=el("div",{class:"seg",role:"group","aria-label":"Choose for "+name});
       [["no","No"],["yes","Yes"],["more","Extra"]].forEach(([v,t])=>{
@@ -298,9 +343,41 @@ function renderItems(){
       row.append(left,retired?el("span"):seg,tiny);
       g.append(row);
     });
-    box.append(g);
+    if(any) box.append(g);
   });
+  if(q && !shown){
+    const raw=QUERY.trim();
+    box.append(el("div",{class:"empty"},el("span",{text:"Nothing called \u201c"+raw+"\u201d on the list."}),
+      el("button",{class:"btn",type:"button",text:"Add \u201c"+raw+"\u201d to the order",onclick:()=>{ S.newItems.push(raw); save(); renderList("newItems","newItems"); setQuery(""); document.getElementById("status").textContent="Added. It\u2019s under Add something."; }})));
+  }
 }
+function setQuery(v){ QUERY=v; const inp=document.getElementById("itemSearch"); if(inp.value!==v) inp.value=v; document.getElementById("itemSearchClear").hidden=!v; renderItems(); }
+
+const fmtLong=k=>{const [y,m,d]=k.split("-").map(Number); return new Date(y,m-1,d).toLocaleDateString("en-US",{weekday:"short",month:"short",day:"numeric"});};
+function renderLast(){
+  const ids=Object.keys(LAST_ORDER.qty).filter(id=>NAMES[id]);
+  const units=ids.reduce((a,id)=>a+LAST_ORDER.qty[id],0);
+  document.getElementById("lastMeta").textContent=fmtLong(LAST_ORDER.placed).replace(/^\w+, /,"")+" \u00b7 "+ids.length+" items";
+  document.getElementById("lastHint").textContent="Ordered "+fmtLong(LAST_ORDER.placed)+", delivered "+fmtLong(LAST_ORDER.delivered)+". "+ids.length+" items, "+units+" in all.";
+  const ul=document.getElementById("lastList"); ul.replaceChildren();
+  ids.sort((a,b)=>NAMES[a].localeCompare(NAMES[b])).forEach(id=>{
+    const li=el("li",{},el("span",{text:NAMES[id]}),el("b",{text:"\u00d7 "+LAST_ORDER.qty[id]}));
+    if(S.retired.includes(id)) li.style.opacity=".55";
+    ul.append(li);
+  });
+  const allSet=ids.filter(id=>!S.retired.includes(id)).every(id=>S.picks[id]===(LAST_ORDER.qty[id]>1?"more":"yes"));
+  const b=document.getElementById("sameAgain"); b.textContent=allSet?"Clear those picks":"Same as last time"; b.classList.toggle("primary",!allSet);
+}
+document.getElementById("sameAgain").addEventListener("click",()=>{
+  const ids=Object.keys(LAST_ORDER.qty).filter(id=>NAMES[id]&&!S.retired.includes(id));
+  const allSet=ids.every(id=>S.picks[id]===(LAST_ORDER.qty[id]>1?"more":"yes"));
+  if(allSet){ ids.forEach(id=>delete S.picks[id]); S.fromLast=null; document.getElementById("status").textContent="Cleared."; }
+  else { ids.forEach(id=>S.picks[id]=LAST_ORDER.qty[id]>1?"more":"yes"); S.fromLast=LAST_ORDER.placed; document.getElementById("status").textContent="Marked "+ids.length+" items Yes. Flip any you don\u2019t want."; }
+  try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}
+  metas(); renderItems(); renderLast();
+});
+document.getElementById("itemSearch").addEventListener("input",e=>setQuery(e.target.value));
+document.getElementById("itemSearchClear").addEventListener("click",()=>{setQuery(""); document.getElementById("itemSearch").focus();});
 
 function renderList(ulId,field){
   const ul=document.getElementById(ulId); ul.replaceChildren();
@@ -322,6 +399,7 @@ function summary(){
   if(S.daysText.trim()){L.push("NEXT FEW DAYS"); L.push(S.daysText.trim()); L.push("");}
   const dayLines=weekDays.map(d=>{const {dow,md,key}=fmtDay(d); const c=S.days[key]||{}; if(!c.breakfast&&!c.dinner) return null; return dow+" "+md+": breakfast "+(c.breakfast||"open")+", dinner "+(c.dinner||"open");}).filter(Boolean);
   if(dayLines.length){L.push("DAY BY DAY"); L.push(...dayLines); L.push("");}
+  if(S.fromLast){L.push("Started from the last order ("+S.fromLast+"), then adjusted."); L.push("");}
   const by={yes:[],more:[],no:[]}; Object.entries(S.picks).forEach(([id,v])=>{ if(v&&NAMES[id]&&!S.retired.includes(id)) by[v].push(NAMES[id]); });
   if(by.yes.length){L.push("YES"); L.push(...by.yes.map(x=>"- "+x)); L.push("");}
   if(by.more.length){L.push("EXTRA"); L.push(...by.more.map(x=>"- "+x)); L.push("");}
@@ -352,7 +430,7 @@ document.getElementById("copy").addEventListener("click",async()=>{
 
 renderChips("moods",MOODS,"moods");
 renderChips("prefs",PREFS,"prefs");
-renderDays(); renderItems();
+renderDays(); renderItems(); renderLast();
 wireAdd("newItem","addItem","newItems","newItems");
 wireAdd("outItem","addOut","outItems","out");
 wireAdd("tryItem","addTry","tryItems","tryList");

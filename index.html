@@ -1,0 +1,328 @@
+<title>Kitchen List</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Karla:wght@400;500;600&display=swap">
+<style>
+:root{
+  --ground:#F1F4EC;
+  --surface:#FFFFFF;
+  --surface2:#E7ECE2;
+  --line:#CFD8CA;
+  --ink:#1E2A22;
+  --muted:#5F6E63;
+  --accent:#7E2B50;
+  --accent-ink:#FFFFFF;
+  --accent-soft:#F2E2EA;
+  --yes:#2E7A4E;
+  --yes-soft:#DFF0E5;
+  --no:#8A5A2B;
+  --no-soft:#F3E7D8;
+  --focus:#7E2B50;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#131915; --surface:#1B231E; --surface2:#232D26; --line:#34403A;
+    --ink:#E9EFE7; --muted:#9AA99E; --accent:#E38FB4; --accent-ink:#1B1016;
+    --accent-soft:#3A2431; --yes:#7FCB9A; --yes-soft:#1F3A2A; --no:#D9A56A; --no-soft:#3A2E1F; --focus:#E38FB4;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#131915; --surface:#1B231E; --surface2:#232D26; --line:#34403A;
+  --ink:#E9EFE7; --muted:#9AA99E; --accent:#E38FB4; --accent-ink:#1B1016;
+  --accent-soft:#3A2431; --yes:#7FCB9A; --yes-soft:#1F3A2A; --no:#D9A56A; --no-soft:#3A2E1F; --focus:#E38FB4;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--ink);font:16px/1.45 Karla,"Helvetica Neue",Arial,sans-serif;-webkit-text-size-adjust:100%}
+main{max-width:640px;margin:0 auto;padding:20px 16px 120px}
+h1,h2,h3{font-family:Fraunces,Georgia,serif;text-wrap:balance;margin:0;font-weight:600}
+h1{font-size:34px;line-height:1.1;letter-spacing:-.01em}
+h2{font-size:22px;line-height:1.2}
+h3{font-size:15px;font-weight:600;font-family:Karla,sans-serif;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+p{margin:0}
+.sub{color:var(--muted);margin-top:6px}
+header{display:flex;flex-direction:column;gap:6px;margin-bottom:22px}
+section{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px 16px;margin-bottom:14px;display:flex;flex-direction:column;gap:14px}
+.hint{color:var(--muted);font-size:14px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:9px 14px;font:inherit;font-size:15px;cursor:pointer;line-height:1.1}
+.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+textarea,input[type=text],select{width:100%;font:inherit;font-size:16px;color:var(--ink);background:var(--surface2);border:1px solid var(--line);border-radius:10px;padding:11px 12px}
+textarea{min-height:88px;resize:vertical}
+:is(button,textarea,input,select,a):focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.days{display:flex;flex-direction:column;gap:8px}
+.day{display:grid;grid-template-columns:78px 1fr 1fr;gap:8px;align-items:center}
+.day .lbl{font-weight:600;font-size:15px}
+.day .lbl small{display:block;color:var(--muted);font-weight:400;font-size:13px}
+.day select{padding:9px 8px;font-size:15px}
+.dayhead{display:grid;grid-template-columns:78px 1fr 1fr;gap:8px;color:var(--muted);font-size:13px;text-transform:uppercase;letter-spacing:.06em}
+.group{display:flex;flex-direction:column;gap:6px}
+.group h3{margin-top:6px}
+.item{display:grid;grid-template-columns:1fr auto;gap:8px 10px;align-items:center;padding:8px 0;border-top:1px solid var(--line)}
+.item:first-of-type{border-top:0}
+.item .name{font-size:15px;line-height:1.3}
+.item .price{color:var(--muted);font-size:13px;font-variant-numeric:tabular-nums}
+.item .price a{color:var(--muted)}
+.item.retired .name{text-decoration:line-through;color:var(--muted)}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:999px;overflow:hidden}
+.seg button{font:inherit;font-size:14px;padding:8px 12px;border:0;background:var(--surface);color:var(--muted);cursor:pointer;border-left:1px solid var(--line)}
+.seg button:first-child{border-left:0}
+.seg button[aria-pressed="true"].no{background:var(--no-soft);color:var(--no);font-weight:600}
+.seg button[aria-pressed="true"].yes{background:var(--yes-soft);color:var(--yes);font-weight:600}
+.seg button[aria-pressed="true"].more{background:var(--accent);color:var(--accent-ink);font-weight:600}
+.tiny{background:none;border:0;color:var(--muted);font:inherit;font-size:13px;padding:0;cursor:pointer;text-decoration:underline;text-underline-offset:2px;justify-self:start}
+.addrow{display:flex;gap:8px}
+.addrow input{flex:1}
+.btn{font:inherit;font-size:15px;font-weight:600;border-radius:10px;padding:11px 16px;border:1px solid var(--line);background:var(--surface2);color:var(--ink);cursor:pointer;white-space:nowrap}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+ul.plain{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+ul.plain li{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:8px 12px;background:var(--surface2);border-radius:10px;font-size:15px}
+.bar{position:fixed;left:0;right:0;bottom:0;background:var(--surface);border-top:1px solid var(--line);padding:12px 16px calc(12px + env(safe-area-inset-bottom))}
+.bar .in{max-width:640px;margin:0 auto;display:flex;gap:10px;align-items:center;justify-content:space-between}
+.bar .status{color:var(--muted);font-size:13px}
+.bar .btn{flex:0 0 auto}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media (max-width:420px){.two{grid-template-columns:1fr}.day{grid-template-columns:64px 1fr 1fr}}
+@media (prefers-reduced-motion:no-preference){.chip,.seg button{transition:background .12s,color .12s}}
+</style>
+
+<main>
+  <header>
+    <h1>Kitchen List</h1>
+    <p class="sub">Tap what sounds good. Say anything in your own words. Hit <strong>Send to Eric</strong> when you're done and he'll place the order.</p>
+  </header>
+
+  <section>
+    <h2>This week feels like</h2>
+    <p class="hint">Pick as many as you want.</p>
+    <div class="chips" id="moods"></div>
+  </section>
+
+  <section>
+    <h2>What sounds good</h2>
+    <div class="group">
+      <h3>This week</h3>
+      <textarea id="weekText" placeholder="Anything. A dish, a craving, something you saw, a night you want to be easy."></textarea>
+    </div>
+    <div class="group">
+      <h3>Next few days</h3>
+      <textarea id="daysText" placeholder="Short notes for the next day or two."></textarea>
+    </div>
+  </section>
+
+  <section>
+    <h2>Day by day</h2>
+    <p class="hint">Only if you feel like planning. Leave blank and it's fine.</p>
+    <div class="dayhead"><span></span><span>Breakfast</span><span>Dinner</span></div>
+    <div class="days" id="days"></div>
+  </section>
+
+  <section>
+    <h2>Starting list</h2>
+    <p class="hint"><strong>Yes</strong> means put it in. <strong>Extra</strong> means more than one. <strong>No</strong> means skip it this time. Leave it blank and Eric decides.</p>
+    <div id="items"></div>
+  </section>
+
+  <section>
+    <h2>Add something</h2>
+    <div class="addrow"><input type="text" id="newItem" placeholder="Anything you want in the order" autocomplete="off"><button class="btn" id="addItem">Add</button></div>
+    <ul class="plain" id="newItems"></ul>
+  </section>
+
+  <section>
+    <h2>Quick flags</h2>
+    <div class="two">
+      <div class="group">
+        <h3>We're out of</h3>
+        <div class="addrow"><input type="text" id="outItem" placeholder="Eggs, coffee..." autocomplete="off"><button class="btn" id="addOut">Add</button></div>
+        <ul class="plain" id="outItems"></ul>
+      </div>
+      <div class="group">
+        <h3>Want to try</h3>
+        <div class="addrow"><input type="text" id="tryItem" placeholder="Something new" autocomplete="off"><button class="btn" id="addTry">Add</button></div>
+        <ul class="plain" id="tryItems"></ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>What I like, in general</h2>
+    <p class="hint">These stick around week to week.</p>
+    <div class="chips" id="prefs"></div>
+    <textarea id="prefsText" placeholder="Anything else that's always true. Foods you love, foods you're done with, how you like lunch to go."></textarea>
+  </section>
+</main>
+
+<div class="bar">
+  <div class="in">
+    <span class="status" id="status">Saved on this phone</span>
+    <span style="display:flex;gap:8px">
+      <button class="btn" id="copy">Copy</button>
+      <button class="btn primary" id="send">Send to Eric</button>
+    </span>
+  </div>
+</div>
+
+<script>
+const TO = ["eric_replogle","yahoo.com"].join("@");
+const MOODS = ["Comfort food","Light and fresh","Quick and easy","Cook a real meal","Soups and bowls","Tacos night","Pasta night","Breakfast for dinner","Salads for lunch","Leftovers are fine","Eating out a night or two"];
+const PREFS = ["Protein and veggie lunches","Light on bread and carbs","Organic when there's a choice","Spicy is good","Less sugar","More fish","More chicken","No red meat","Dairy is fine","Snacks please"];
+const BREAKFAST = ["","Eggs","Yogurt and fruit","Waffles","Pancake bites","Breakfast sandwich","Smoothie","Oatmeal","Skip / out"];
+const DINNER = ["","Chicken","Ground turkey","Pasta","Tacos","Salad bowl","Fish","Soup","Ravioli","Leftovers","Out / covered"];
+const ITEMS = [
+ ["Produce",[
+  ["p1","Organicgirl Baby Spinach, 5 oz","$4.79",""],
+  ["p2","Organic Gold Kiwi, 1 lb","$6.99","B079JMTDH4"],
+  ["p3","Organic Fuji Apple","$2.99/lb","B000YTXXDI"],
+  ["p4","Organic Banana","$0.79/lb","B0787Y4V6T"],
+  ["p5","Organic Sweet Potato","$2.99/lb","B07FZKXQT2"],
+  ["p6","Organic Red Pear","$2.49/lb","B0787Y4DR1"],
+  ["p7","Organic Red Seedless Grapes","$2.99/lb",""],
+  ["p8","Organic Butternut Squash","$1.99/lb","B002QY3U5A"],
+  ["p9","Organic White Peach","$4.99/lb","B003TQ8EPK"],
+  ["p10","Organic Yellow Nectarine","$3.99/lb","B003TQ6IY4"],
+  ["p11","Organic Blueberries, pint","$5.99","B077N7TR5G"],
+  ["p12","Large Organic Hass Avocado","$2.99 each","B0014GLSE6"],
+  ["p13","Organic Keitt Mango","$3.33 each",""]]],
+ ["Protein",[
+  ["m1","Bell & Evans Organic Chicken Breast Tenderloin","$9.99/lb","B08538NWFT"],
+  ["m2","Kochs Organic Ground Turkey, 16 oz","$8.49","B078DF8PZ8"],
+  ["m3","Country Hen Organic Large Eggs, 6 ct","$5.99","B00G8UA91Q"],
+  ["m4","Wellshire Uncured Turkey Bacon, 3 oz","$7.49","B074VBLKL9"],
+  ["m5","Amylu Chicken Sausage Breakfast Patties, 12 oz","$6.99","B0DXVYNSCN"],
+  ["m6","Mason Dixie Cheddar Sausage Breakfast Sandwich","$4.49 each",""]]],
+ ["Dairy and cheese",[
+  ["d1","Fage Total 2% Greek Yogurt, 5.3 oz","$1.99 each","B000VR81IA"],
+  ["d2","Icelandic Provisions Skyr, Strawberries & Cream","$2.09 each","B0CC43K5YZ"],
+  ["d3","Whole Foods Organic Fresh Goat Cheese, 4 oz","$5.99","B074H64BVD"],
+  ["d4","Tillamook Cheddar Bar, 8 oz","$5.29","B07PJTJW7H"]]],
+ ["Frozen",[
+  ["f1","365 Organic Sweet Dark Cherries, 10 oz","$4.59","B074H57SNZ"],
+  ["f2","365 Organic Sliced Peaches, 10 oz","$4.39","B074J5TWDV"],
+  ["f3","Birch Benders Protein Toaster Waffles, 6 ct","$7.79","B09XYWQPWZ"],
+  ["f4","365 Original Pancake Bites, 10.8 oz","$3.49","B07YHG39KZ"]]],
+ ["Pantry and bread",[
+  ["b1","Carbone Alfredo Pasta Sauce, 15 oz","$8.99","B0D82BQT4Q"],
+  ["b2","Artisola Organic Portabella Mushroom Ravioli, 8 oz","$6.29","B078B9JPN3"],
+  ["b3","365 Organic Black Beans, 15 oz","$1.59","B074H6QVKY"],
+  ["b4","La Tortilla Factory Organic Tortillas, 6 ct","$4.99",""],
+  ["b5","Whole Foods Ancient Grains Half Loaf","$2.99",""],
+  ["b6","365 Organic Dark Maple Syrup, 12 fl oz","$6.99","B074H5CN2X"],
+  ["b7","Aurora Organic Medjool Dates, 10 oz","$8.49","B079VRDC85"],
+  ["b8","Lakewood Organic Pure Apple Juice, 32 oz","$8.99","B001BKNGHW"],
+  ["b9","Whole Foods Chocolate Chip Mini Muffins, 12 ct","$5.49","B094JPCXC4"]]]
+];
+const NAMES = {}; ITEMS.forEach(([g,rows])=>rows.forEach(r=>NAMES[r[0]]=r[1]));
+
+const KEY = "kitchen-list-v1";
+let S = load();
+function blank(){return {moods:[],weekText:"",daysText:"",days:{},picks:{},retired:[],newItems:[],out:[],tryList:[],prefs:[],prefsText:"",sentAt:null,weekStart:null};}
+function load(){ try{const r=localStorage.getItem(KEY); if(r){return Object.assign(blank(),JSON.parse(r));}}catch(e){} return blank(); }
+let saveT; function save(){ try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){} const st=document.getElementById("status"); st.textContent="Saved on this phone"; }
+
+const weekDays = (()=>{const out=[]; const d=new Date(); for(let i=0;i<7;i++){const x=new Date(d); x.setDate(d.getDate()+i); out.push(x);} return out;})();
+const fmtDay = d=>({dow:d.toLocaleDateString("en-US",{weekday:"short"}), md:(d.getMonth()+1)+"/"+d.getDate(), key:d.toISOString().slice(0,10)});
+const thisWeekKey = fmtDay(weekDays[0]).key;
+if (S.weekStart !== thisWeekKey) {
+  const keep = Object.fromEntries(Object.entries(S.days).filter(([k])=>k>=thisWeekKey));
+  S.days = keep; S.weekStart = thisWeekKey;
+}
+
+function el(tag,attrs={},...kids){const e=document.createElement(tag); for(const [k,v] of Object.entries(attrs)){ if(k==="text") e.textContent=v; else if(k.startsWith("on")) e.addEventListener(k.slice(2),v); else e.setAttribute(k,v);} kids.forEach(k=>e.append(k)); return e;}
+
+function renderChips(id,list,field){
+  const box=document.getElementById(id); box.replaceChildren();
+  list.forEach(label=>{
+    const on=S[field].includes(label);
+    box.append(el("button",{class:"chip",type:"button","aria-pressed":String(on),text:label,onclick:()=>{ S[field]=on?S[field].filter(x=>x!==label):[...S[field],label]; save(); renderChips(id,list,field);}}));
+  });
+}
+
+function renderDays(){
+  const box=document.getElementById("days"); box.replaceChildren();
+  weekDays.forEach(d=>{
+    const {dow,md,key}=fmtDay(d); const cur=S.days[key]||{};
+    const mk=(slot,opts)=>{const s=el("select",{"aria-label":slot+" "+dow}); opts.forEach(o=>s.append(el("option",{value:o,text:o||"Pick one"}))); s.value=cur[slot]||""; s.addEventListener("change",()=>{S.days[key]=Object.assign({},S.days[key],{[slot]:s.value}); save();}); return s;};
+    const lbl=el("div",{class:"lbl",text:dow}); lbl.append(el("small",{text:md}));
+    box.append(el("div",{class:"day"},lbl,mk("breakfast",BREAKFAST),mk("dinner",DINNER)));
+  });
+}
+
+function renderItems(){
+  const box=document.getElementById("items"); box.replaceChildren();
+  ITEMS.forEach(([group,rows])=>{
+    const g=el("div",{class:"group"},el("h3",{text:group}));
+    rows.forEach(([id,name,price,asin])=>{
+      const retired=S.retired.includes(id); const pick=S.picks[id]||"";
+      const row=el("div",{class:"item"+(retired?" retired":"")});
+      const left=el("div"); left.append(el("div",{class:"name",text:name}));
+      const pr=el("div",{class:"price"}); pr.append(document.createTextNode(price));
+      if(asin){ pr.append(document.createTextNode("  ")); pr.append(el("a",{href:"https://www.amazon.com/dp/"+asin,target:"_blank",rel:"noopener",text:"see it"})); }
+      left.append(pr);
+      const seg=el("div",{class:"seg",role:"group","aria-label":"Choose for "+name});
+      [["no","No"],["yes","Yes"],["more","Extra"]].forEach(([v,t])=>{
+        seg.append(el("button",{type:"button",class:v,"aria-pressed":String(pick===v),text:t,onclick:()=>{ S.picks[id]=(pick===v?"":v); save(); renderItems(); }}));
+      });
+      const tiny=el("button",{class:"tiny",type:"button",text:retired?"bring it back":"done with this one",onclick:()=>{ S.retired=retired?S.retired.filter(x=>x!==id):[...S.retired,id]; if(!retired) delete S.picks[id]; save(); renderItems(); }});
+      row.append(left,retired?el("span"):seg,tiny);
+      g.append(row);
+    });
+    box.append(g);
+  });
+}
+
+function renderList(ulId,field){
+  const ul=document.getElementById(ulId); ul.replaceChildren();
+  S[field].forEach((t,i)=>ul.append(el("li",{},el("span",{text:t}),el("button",{class:"tiny",type:"button",text:"remove",onclick:()=>{S[field].splice(i,1);save();renderList(ulId,field);}}))));
+}
+function wireAdd(inputId,btnId,ulId,field){
+  const inp=document.getElementById(inputId); const add=()=>{const v=inp.value.trim(); if(!v) return; S[field].push(v); inp.value=""; save(); renderList(ulId,field);};
+  document.getElementById(btnId).addEventListener("click",add);
+  inp.addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();add();}});
+  renderList(ulId,field);
+}
+function wireText(id,field){const t=document.getElementById(id); t.value=S[field]||""; t.addEventListener("input",()=>{S[field]=t.value; clearTimeout(saveT); saveT=setTimeout(save,300);});}
+
+function summary(){
+  const L=[]; const wk=fmtDay(weekDays[0]);
+  L.push("Kitchen List, week of "+wk.dow+" "+wk.md); L.push("");
+  if(S.moods.length){L.push("THIS WEEK FEELS LIKE"); L.push(S.moods.join(", ")); L.push("");}
+  if(S.weekText.trim()){L.push("WHAT SOUNDS GOOD THIS WEEK"); L.push(S.weekText.trim()); L.push("");}
+  if(S.daysText.trim()){L.push("NEXT FEW DAYS"); L.push(S.daysText.trim()); L.push("");}
+  const dayLines=weekDays.map(d=>{const {dow,md,key}=fmtDay(d); const c=S.days[key]||{}; if(!c.breakfast&&!c.dinner) return null; return dow+" "+md+": breakfast "+(c.breakfast||"open")+", dinner "+(c.dinner||"open");}).filter(Boolean);
+  if(dayLines.length){L.push("DAY BY DAY"); L.push(...dayLines); L.push("");}
+  const by={yes:[],more:[],no:[]}; Object.entries(S.picks).forEach(([id,v])=>{ if(v&&NAMES[id]&&!S.retired.includes(id)) by[v].push(NAMES[id]); });
+  if(by.yes.length){L.push("YES"); L.push(...by.yes.map(x=>"- "+x)); L.push("");}
+  if(by.more.length){L.push("EXTRA"); L.push(...by.more.map(x=>"- "+x)); L.push("");}
+  if(by.no.length){L.push("NO THIS TIME"); L.push(...by.no.map(x=>"- "+x)); L.push("");}
+  if(S.retired.length){L.push("DONE WITH THESE"); L.push(...S.retired.map(id=>"- "+NAMES[id]).filter(Boolean)); L.push("");}
+  if(S.newItems.length){L.push("ADD"); L.push(...S.newItems.map(x=>"- "+x)); L.push("");}
+  if(S.out.length){L.push("WE'RE OUT OF"); L.push(...S.out.map(x=>"- "+x)); L.push("");}
+  if(S.tryList.length){L.push("WANT TO TRY"); L.push(...S.tryList.map(x=>"- "+x)); L.push("");}
+  if(S.prefs.length||S.prefsText.trim()){L.push("IN GENERAL"); if(S.prefs.length) L.push(S.prefs.join(", ")); if(S.prefsText.trim()) L.push(S.prefsText.trim()); L.push("");}
+  return L.join("\n").trim();
+}
+
+document.getElementById("send").addEventListener("click",()=>{
+  const wk=fmtDay(weekDays[0]);
+  const subject="Kitchen List, week of "+wk.md;
+  const body=summary();
+  S.sentAt=new Date().toISOString(); save();
+  const st=document.getElementById("status"); st.textContent="Opening your mail app";
+  window.location.href="mailto:"+TO+"?subject="+encodeURIComponent(subject)+"&body="+encodeURIComponent(body);
+  setTimeout(()=>{st.textContent="Sent to Eric "+new Date().toLocaleDateString("en-US",{month:"short",day:"numeric"});},1500);
+});
+document.getElementById("copy").addEventListener("click",async()=>{
+  const st=document.getElementById("status");
+  try{ await navigator.clipboard.writeText(summary()); st.textContent="Copied. Paste it anywhere."; }
+  catch(e){ st.textContent="Copy didn't work here. Use Send instead."; }
+  setTimeout(save,2500);
+});
+
+renderChips("moods",MOODS,"moods");
+renderChips("prefs",PREFS,"prefs");
+renderDays(); renderItems();
+wireAdd("newItem","addItem","newItems","newItems");
+wireAdd("outItem","addOut","outItems","out");
+wireAdd("tryItem","addTry","tryItems","tryList");
+wireText("weekText","weekText"); wireText("daysText","daysText"); wireText("prefsText","prefsText");
+if(S.sentAt){ document.getElementById("status").textContent="Last sent "+new Date(S.sentAt).toLocaleDateString("en-US",{month:"short",day:"numeric"}); }
+</script>

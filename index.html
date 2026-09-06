@@ -126,8 +126,15 @@ ul.lastlist li b{font-weight:600;color:var(--muted);white-space:nowrap}
 <main>
   <header>
     <h1>Kitchen List</h1>
-    <p class="sub" id="intro">Grocery order going in. Here's what I've got so far. Change anything you want, then send it back to me.</p>
+    <p class="sub" id="intro">Send me a note any time. When I'm ordering groceries, the list below is what I've got, change anything.</p>
   </header>
+
+  <section class="note">
+    <h2>Tell Eric something</h2>
+    <p class="hint">Goes straight to his phone as a text. No grocery list attached.</p>
+    <div class="addrow"><input type="text" id="noteText" placeholder="Anything at all" autocomplete="off"><button class="btn primary" type="button" id="textEric">Text</button></div>
+    <p class="hint" id="noteStatus" hidden></p>
+  </section>
 
   <section class="cart" id="cart">
     <h2 id="cartTitle">Here's the order<span class="tick"> &#10003;</span></h2>
@@ -217,13 +224,14 @@ ul.lastlist li b{font-weight:600;color:var(--muted);white-space:nowrap}
     <span class="status" id="status">Saved on this phone</span>
     <span class="actions" style="display:flex;gap:8px">
       <button class="btn" type="button" id="copy">Copy</button>
-      <button class="btn primary" type="button" id="send">Send to Eric</button>
+      <button class="btn primary" type="button" id="send">Send the order</button>
     </span>
   </div>
 </div>
 
 <script>
 const TO = ["eric_replogle","yahoo.com"].join("@");
+const CELL = ["207","329","0929"].join(""); // Eric's cell, for the note text only. Split so scrapers miss it.
 const GAP_DAYS = 21; // longer than this since the last order and the page starts from the basics instead
 const MOODS = ["Comfort food","Light and fresh","Quick and easy","Cook a real meal","Soups and bowls","Tacos night","Pasta night","Breakfast for dinner","Salads for lunch","Leftovers are fine","Eating out a night or two"];
 const PREFS = ["Protein and veggie lunches","Light on bread and carbs","Organic when there's a choice","Spicy is good","Less sugar","More fish","More chicken","No red meat","Dairy is fine","Snacks please"];
@@ -290,7 +298,7 @@ const NAMES = {}; ROWS.forEach(r=>NAMES[r.id]=r.n);
 const SHORT = id => (BY[id] && BY[id].short) || NAMES[id] || id;
 
 const KEY = "kitchen-list-v1";
-function blank(){return {moods:[],weekText:"",daysText:"",days:{},picks:{},retired:[],newItems:[],out:[],tryList:[],prefs:[],prefsText:"",sentAt:null,weekStart:null,startedFrom:null,seenOrder:null,touched:false,confirmed:false};}
+function blank(){return {moods:[],weekText:"",daysText:"",days:{},picks:{},retired:[],newItems:[],out:[],tryList:[],prefs:[],prefsText:"",note:"",sentAt:null,weekStart:null,startedFrom:null,seenOrder:null,touched:false,confirmed:false};}
 function load(){ try{const r=localStorage.getItem(KEY); if(r){return Object.assign(blank(),JSON.parse(r));}}catch(e){} return blank(); }
 let S = load();
 function write(){ try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){} }
@@ -361,13 +369,28 @@ function renderCart(){
   lg.setAttribute("aria-pressed", String(!!S.confirmed));
   lg.textContent = S.confirmed ? "Looks good ✓" : "Looks good";
   cart.classList.toggle("done", !!S.confirmed);
-  if (S.confirmed) document.getElementById("cartHint").textContent = "You're set. Hit Send to Eric down at the bottom.";
+  if (S.confirmed) document.getElementById("cartHint").textContent = "You're set. Hit Send the order down at the bottom.";
   void outs;
 }
 
+/* ---------- the note: a text to Eric, on its own, nothing attached ---------- */
+const noteBody = () => (document.getElementById("noteText").value||"").trim();
+function noteSay(msg){ const e=document.getElementById("noteStatus"); e.textContent=msg; e.hidden=!msg; }
+document.getElementById("noteText").addEventListener("input",()=>{ S.note=noteBody(); clearTimeout(saveT); saveT=setTimeout(write,300); noteSay(""); });
+function sendNote(){
+  const t = noteBody();
+  if(!t){ noteSay("Type something first."); document.getElementById("noteText").focus(); return; }
+  const sep = /Android/i.test(navigator.userAgent) ? "?body=" : "&body=";
+  noteSay("Opening Messages.");
+  window.location.href = "sms:" + CELL + sep + encodeURIComponent(t);
+  setTimeout(()=>{ document.getElementById("noteText").value=""; S.note=""; write(); noteSay("Sent. Say anything else whenever."); }, 1200);
+}
+document.getElementById("textEric").addEventListener("click",sendNote);
+document.getElementById("noteText").addEventListener("keydown",e=>{ if(e.key==="Enter"){ e.preventDefault(); sendNote(); }});
+
 document.getElementById("looksGood").addEventListener("click",()=>{
   S.confirmed = !S.confirmed; write(); renderCart();
-  document.getElementById("status").textContent = S.confirmed ? "Ready. Hit Send to Eric." : "Saved on this phone";
+  document.getElementById("status").textContent = S.confirmed ? "Ready. Hit Send the order." : "Saved on this phone";
 });
 document.getElementById("openList").addEventListener("click",()=>{
   const f=document.getElementById("itemsFold"); f.open=true;
@@ -503,6 +526,7 @@ function summary(){
     if(S.confirmed) L.push("Marked it looks good.");
   }
   L.push("");
+  if(noteBody()){L.push("A NOTE"); L.push(noteBody()); L.push("");}
   if(S.moods.length){L.push("THIS WEEK FEELS LIKE"); L.push(S.moods.join(", ")); L.push("");}
   if(S.weekText.trim()){L.push("WHAT SOUNDS GOOD THIS WEEK"); L.push(S.weekText.trim()); L.push("");}
   if(S.daysText.trim()){L.push("NEXT FEW DAYS"); L.push(S.daysText.trim()); L.push("");}
@@ -528,12 +552,12 @@ document.getElementById("send").addEventListener("click",()=>{
   S.sentAt=new Date().toISOString(); save();
   const st=document.getElementById("status"); st.textContent="Opening your mail app";
   window.location.href="mailto:"+TO+"?subject="+encodeURIComponent(subject)+"&body="+encodeURIComponent(body);
-  setTimeout(()=>{st.textContent="Sent to Eric "+new Date().toLocaleDateString("en-US",{month:"short",day:"numeric"});},1500);
+  setTimeout(()=>{st.textContent="Order sent "+new Date().toLocaleDateString("en-US",{month:"short",day:"numeric"});},1500);
 });
 document.getElementById("copy").addEventListener("click",async()=>{
   const st=document.getElementById("status");
   try{ await navigator.clipboard.writeText(summary()); st.textContent="Copied. Paste it anywhere."; }
-  catch(e){ st.textContent="Copy didn't work here. Use Send instead."; }
+  catch(e){ st.textContent="Copy didn't work here. Use Send the order instead."; }
   setTimeout(save,2500);
 });
 
@@ -543,9 +567,10 @@ renderDays(); renderItems(); renderLast(); renderCart();
 wireAdd("newItem","addItem","newItems","newItems");
 wireAdd("outItem","addOut","outItems","out");
 wireAdd("tryItem","addTry","tryItems","tryList");
+document.getElementById("noteText").value = S.note || "";
 wireText("weekText","weekText"); wireText("daysText","daysText"); wireText("prefsText","prefsText");
 metas();
-if(S.sentAt){ document.getElementById("status").textContent="Last sent "+new Date(S.sentAt).toLocaleDateString("en-US",{month:"short",day:"numeric"}); }
+if(S.sentAt){ document.getElementById("status").textContent="Order last sent "+new Date(S.sentAt).toLocaleDateString("en-US",{month:"short",day:"numeric"}); }
 </script>
 </body>
 </html>

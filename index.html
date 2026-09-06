@@ -41,19 +41,19 @@ html{-webkit-text-size-adjust:100%}
 body{margin:0;background:var(--ground);color:var(--ink);font:17px/1.45 Karla,"Helvetica Neue",Arial,sans-serif}
 main{max-width:640px;margin:0 auto;padding:20px 16px 130px}
 h1,h2,h3{font-family:Fraunces,Georgia,serif;text-wrap:balance;margin:0;font-weight:600}
-h1{font-size:34px;line-height:1.1;letter-spacing:-.01em}
+h1{font-size:32px;line-height:1.1;letter-spacing:-.01em}
 h2{font-size:22px;line-height:1.2}
 h3{font-size:15px;font-weight:600;font-family:Karla,sans-serif;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
 p{margin:0}
-.sub{color:var(--muted);margin-top:6px}
-header{display:flex;flex-direction:column;gap:6px;margin-bottom:22px}
+.sub{color:var(--muted);margin-top:6px;font-size:16px}
+header{display:flex;flex-direction:column;gap:4px;margin-bottom:18px}
 section{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px 16px;margin-bottom:14px;display:flex;flex-direction:column;gap:14px}
 .hint{color:var(--muted);font-size:15px}
 .chips{display:flex;flex-wrap:wrap;gap:10px}
 .chip{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:12px 18px;min-height:46px;font:inherit;font-size:17px;cursor:pointer;line-height:1.1;touch-action:manipulation}
 .chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
-textarea,input[type=text],select{width:100%;font:inherit;font-size:17px;color:var(--ink);background:var(--surface2);border:1px solid var(--line);border-radius:10px;padding:13px 14px;min-height:48px}
-textarea{min-height:100px;resize:vertical}
+textarea,input[type=text],input[type=search],select{width:100%;font:inherit;font-size:17px;color:var(--ink);background:var(--surface2);border:1px solid var(--line);border-radius:10px;padding:13px 14px;min-height:48px}
+textarea{min-height:88px;resize:vertical}
 :is(button,textarea,input,select,a):focus-visible{outline:2px solid var(--focus);outline-offset:2px}
 .days{display:flex;flex-direction:column;gap:10px}
 .day{display:grid;grid-template-columns:78px 1fr 1fr;gap:8px;align-items:center}
@@ -69,8 +69,9 @@ textarea{min-height:100px;resize:vertical}
 .item .price{color:var(--muted);font-size:14px;font-variant-numeric:tabular-nums}
 .item .price a{color:var(--muted)}
 .item.retired .name{text-decoration:line-through;color:var(--muted)}
+.item.out .name{opacity:.5}
 .seg{display:inline-flex;border:1px solid var(--line);border-radius:999px;overflow:hidden}
-.seg button{font:inherit;font-size:16px;padding:0 16px;min-height:46px;border:0;background:var(--surface);color:var(--muted);cursor:pointer;border-left:1px solid var(--line);touch-action:manipulation}
+.seg button{font:inherit;font-size:16px;padding:0 15px;min-height:46px;border:0;background:var(--surface);color:var(--muted);cursor:pointer;border-left:1px solid var(--line);touch-action:manipulation}
 .seg button:first-child{border-left:0}
 .seg button[aria-pressed="true"].no{background:var(--no-soft);color:var(--no);font-weight:600}
 .seg button[aria-pressed="true"].yes{background:var(--yes-soft);color:var(--yes);font-weight:600}
@@ -87,17 +88,17 @@ ul.plain li{display:flex;justify-content:space-between;gap:10px;align-items:cent
 .bar .status{color:var(--muted);font-size:14px}
 .bar .btn{flex:0 0 auto}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-@media (max-width:520px){.two{grid-template-columns:1fr}.day{grid-template-columns:64px 1fr 1fr}.dayhead{grid-template-columns:64px 1fr 1fr}.bar .status{display:none}.bar .in{justify-content:stretch}.bar .in>span.actions{flex:1;display:flex;gap:10px}.bar .btn{flex:1}}
+@media (max-width:520px){.cart .cartbtns{flex-direction:column}.two{grid-template-columns:1fr}.day{grid-template-columns:64px 1fr 1fr}.dayhead{grid-template-columns:64px 1fr 1fr}.bar .status{display:none}.bar .in{justify-content:stretch}.bar .in>span.actions{flex:1;display:flex;gap:10px}.bar .btn{flex:1}}
 /* folded sections */
 details.fold{background:var(--surface);border:1px solid var(--line);border-radius:14px;margin-bottom:14px}
-details.fold>summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:16px;min-height:56px;font-family:Fraunces,Georgia,serif;font-weight:600;font-size:20px}
+details.fold>summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:16px;min-height:56px;font-family:Fraunces,Georgia,serif;font-weight:600;font-size:19px}
 details.fold>summary::-webkit-details-marker{display:none}
 details.fold>summary .meta{font-family:Karla,sans-serif;font-weight:400;font-size:15px;color:var(--muted);display:flex;align-items:center;gap:8px;white-space:nowrap}
 details.fold>summary .chev{display:inline-block;width:10px;height:10px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(45deg);transition:transform .15s;margin-top:-4px}
 details.fold[open]>summary .chev{transform:rotate(-135deg);margin-top:4px}
 details.fold>.body{padding:0 16px 18px;display:flex;flex-direction:column;gap:14px}
 details.fold>.body .hint{margin-top:-4px}
-@media (prefers-reduced-motion:no-preference){.chip,.seg button{transition:background .12s,color .12s}}
+@media (prefers-reduced-motion:no-preference){.chip,.seg button,.cart{transition:background .12s,color .12s,border-color .12s}}
 /* search + last order */
 .search{position:relative}
 .search input{padding-left:40px}
@@ -105,100 +106,108 @@ details.fold>.body .hint{margin-top:-4px}
 .search .clr{position:absolute;right:6px;top:50%;transform:translateY(-50%);min-height:40px;padding:0 12px}
 .empty{color:var(--muted);font-size:15px;display:flex;flex-direction:column;gap:10px;align-items:flex-start}
 .item .count{color:var(--muted);font-size:13px}
-.lastrow{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-.lastrow .hint{flex:1;min-width:160px}
 ul.lastlist{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:6px 14px;font-size:15px}
 ul.lastlist li{display:flex;justify-content:space-between;gap:8px;padding:6px 0;border-bottom:1px solid var(--line)}
 ul.lastlist li b{font-weight:600;color:var(--muted);white-space:nowrap}
 @media (max-width:520px){ul.lastlist{grid-template-columns:1fr}}
+/* the cart card */
+.cart{background:var(--accent-soft);border-color:var(--accent);gap:12px}
+.cart .preview{font-size:16px;line-height:1.4}
+.cart .cartbtns{display:flex;gap:10px}
+.cart .cartbtns .btn{flex:1 1 0;min-width:0}
+.cart.done{background:var(--yes-soft);border-color:var(--yes)}
+.cart.done h2{color:var(--yes)}
+.cart .tick{display:none}
+.cart.done .tick{display:inline}
+.changed{font-size:15px;color:var(--muted)}
 </style>
 </head>
 <body>
 <main>
   <header>
     <h1>Kitchen List</h1>
-    <p class="sub">Tap what sounds good. Say anything in your own words. Hit <strong>Send to Eric</strong> when you're done and he'll place the order.</p>
+    <p class="sub" id="intro">Grocery order going in. Here's what I've got so far. Change anything you want, then send it back to me.</p>
   </header>
 
+  <section class="cart" id="cart">
+    <h2 id="cartTitle">Here's the order<span class="tick"> &#10003;</span></h2>
+    <p class="hint" id="cartHint"></p>
+    <p class="preview" id="cartPreview"></p>
+    <p class="changed" id="cartChanged" hidden></p>
+    <div class="cartbtns">
+      <button class="btn primary" type="button" id="looksGood" aria-pressed="false">Looks good</button>
+      <button class="btn" type="button" id="openList">Change something</button>
+    </div>
+  </section>
+
   <section>
-    <h2>This week feels like</h2>
-    <p class="hint">Pick as many as you want.</p>
+    <h2>In the mood for anything?</h2>
+    <p class="hint">Only if something jumps out. Skip it otherwise.</p>
     <div class="chips" id="moods"></div>
   </section>
 
   <section>
-    <h2>What sounds good</h2>
-    <div class="group">
-      <h3>This week</h3>
-      <textarea id="weekText" placeholder="Anything. A dish, a craving, something you saw, a night you want to be easy."></textarea>
-    </div>
-    <div class="group">
-      <h3>Next few days</h3>
-      <textarea id="daysText" placeholder="Short notes for the next day or two."></textarea>
-    </div>
+    <h2>Want anything added?</h2>
+    <div class="addrow"><input type="text" id="newItem" placeholder="Anything at all" autocomplete="off"><button class="btn" type="button" id="addItem">Add</button></div>
+    <ul class="plain" id="newItems"></ul>
+    <textarea id="weekText" placeholder="Anything else on your mind. A craving, a night you want easy, something you saw."></textarea>
   </section>
+
+  <details class="fold" id="itemsFold">
+    <summary>Change the order <span class="meta"><span id="itemsMeta"></span><span class="chev"></span></span></summary>
+    <div class="body">
+      <div class="search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input type="search" id="itemSearch" placeholder="Find something" autocomplete="off" aria-label="Find something">
+        <button class="tiny clr" type="button" id="itemSearchClear" hidden>clear</button>
+      </div>
+      <p class="hint">Everything marked <strong>In</strong> is already going in the order. Tap <strong>Skip</strong> to take one out, or <strong>&times;2</strong> for double. Things you buy most sit at the top.</p>
+      <div id="items"></div>
+    </div>
+  </details>
+
+  <details class="fold" id="flagsFold">
+    <summary>Out of something? <span class="meta"><span id="flagsMeta">optional</span><span class="chev"></span></span></summary>
+    <div class="body">
+      <div class="two">
+        <div class="group">
+          <h3>We're out of</h3>
+          <div class="addrow"><input type="text" id="outItem" placeholder="Eggs, bananas..." autocomplete="off"><button class="btn" type="button" id="addOut">Add</button></div>
+          <ul class="plain" id="outItems"></ul>
+        </div>
+        <div class="group">
+          <h3>Want to try</h3>
+          <div class="addrow"><input type="text" id="tryItem" placeholder="Something new" autocomplete="off"><button class="btn" type="button" id="addTry">Add</button></div>
+          <ul class="plain" id="tryItems"></ul>
+        </div>
+      </div>
+    </div>
+  </details>
 
   <details class="fold" id="daysFold">
     <summary>Plan the days <span class="meta"><span id="daysMeta">optional</span><span class="chev"></span></span></summary>
     <div class="body">
-      <p class="hint">Only if you feel like planning. Leave blank and it's fine.</p>
+      <p class="hint">Only if you feel like planning. Leave it blank and it's fine.</p>
+      <textarea id="daysText" placeholder="Short notes for the next day or two."></textarea>
       <div class="dayhead"><span></span><span>Breakfast</span><span>Dinner</span></div>
       <div class="days" id="days"></div>
     </div>
   </details>
 
-  <details class="fold" id="lastFold">
-    <summary>Last order <span class="meta"><span id="lastMeta"></span><span class="chev"></span></span></summary>
-    <div class="body">
-      <div class="lastrow">
-        <p class="hint" id="lastHint"></p>
-        <button class="btn" type="button" id="sameAgain">Same as last time</button>
-      </div>
-      <ul class="lastlist" id="lastList"></ul>
-    </div>
-  </details>
-
-  <details class="fold" id="itemsFold">
-    <summary>See the usual list <span class="meta"><span id="itemsMeta">optional</span><span class="chev"></span></span></summary>
-    <div class="body">
-      <div class="search">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
-        <input type="search" id="itemSearch" placeholder="Search the list" autocomplete="off" aria-label="Search the list">
-        <button class="tiny clr" type="button" id="itemSearchClear" hidden>clear</button>
-      </div>
-      <p class="hint"><strong>Yes</strong> means put it in. <strong>Extra</strong> means more than one. <strong>No</strong> means skip it this time. Leave it blank and Eric decides. Things you buy most sit at the top.</p>
-      <div id="items"></div>
-    </div>
-  </details>
-
-  <section>
-    <h2>Add something</h2>
-    <div class="addrow"><input type="text" id="newItem" placeholder="Anything you want in the order" autocomplete="off"><button class="btn" id="addItem">Add</button></div>
-    <ul class="plain" id="newItems"></ul>
-  </section>
-
-  <section>
-    <h2>Quick flags</h2>
-    <div class="two">
-      <div class="group">
-        <h3>We're out of</h3>
-        <div class="addrow"><input type="text" id="outItem" placeholder="Eggs, bananas..." autocomplete="off"><button class="btn" id="addOut">Add</button></div>
-        <ul class="plain" id="outItems"></ul>
-      </div>
-      <div class="group">
-        <h3>Want to try</h3>
-        <div class="addrow"><input type="text" id="tryItem" placeholder="Something new" autocomplete="off"><button class="btn" id="addTry">Add</button></div>
-        <ul class="plain" id="tryItems"></ul>
-      </div>
-    </div>
-  </section>
-
   <details class="fold" id="prefsFold">
-    <summary>What I like, in general <span class="meta"><span id="prefsMeta">optional</span><span class="chev"></span></span></summary>
+    <summary>Stuff you always like <span class="meta"><span id="prefsMeta">optional</span><span class="chev"></span></span></summary>
     <div class="body">
-      <p class="hint">These stick around week to week.</p>
+      <p class="hint">These stick around week to week, so you only say them once.</p>
       <div class="chips" id="prefs"></div>
       <textarea id="prefsText" placeholder="Anything else that's always true. Foods you love, foods you're done with, how you like lunch to go."></textarea>
+    </div>
+  </details>
+
+  <details class="fold" id="lastFold">
+    <summary>What we got last time <span class="meta"><span id="lastMeta"></span><span class="chev"></span></span></summary>
+    <div class="body">
+      <p class="hint" id="lastHint"></p>
+      <ul class="lastlist" id="lastList"></ul>
     </div>
   </details>
 </main>
@@ -207,61 +216,63 @@ ul.lastlist li b{font-weight:600;color:var(--muted);white-space:nowrap}
   <div class="in">
     <span class="status" id="status">Saved on this phone</span>
     <span class="actions" style="display:flex;gap:8px">
-      <button class="btn" id="copy">Copy</button>
-      <button class="btn primary" id="send">Send to Eric</button>
+      <button class="btn" type="button" id="copy">Copy</button>
+      <button class="btn primary" type="button" id="send">Send to Eric</button>
     </span>
   </div>
 </div>
 
 <script>
 const TO = ["eric_replogle","yahoo.com"].join("@");
+const GAP_DAYS = 21; // longer than this since the last order and the page starts from the basics instead
 const MOODS = ["Comfort food","Light and fresh","Quick and easy","Cook a real meal","Soups and bowls","Tacos night","Pasta night","Breakfast for dinner","Salads for lunch","Leftovers are fine","Eating out a night or two"];
 const PREFS = ["Protein and veggie lunches","Light on bread and carbs","Organic when there's a choice","Spicy is good","Less sugar","More fish","More chicken","No red meat","Dairy is fine","Snacks please"];
 const BREAKFAST = ["","Eggs","Yogurt and fruit","Waffles","Pancake bites","Breakfast sandwich","Smoothie","Oatmeal","Skip / out"];
 const DINNER = ["","Chicken","Ground turkey","Pasta","Tacos","Salad bowl","Fish","Soup","Ravioli","Leftovers","Out / covered"];
-// ==== DATA, edited after each order. Row: [id, name, price, amazonId, timesOrdered] ====
+// ==== DATA, edited after each order.
+// Row: {id, n:full name, short:name for the preview line, price, az:Amazon id, times:times ordered, basic:1 if it belongs in a bare-bones starting order}
 const ITEMS = [
  ["Produce",[
-  ["p1","Organicgirl Baby Spinach, 5 oz","$4.79","",1],
-  ["p2","Organic Gold Kiwi, 1 lb","$6.99","B079JMTDH4",1],
-  ["p3","Organic Fuji Apple","$2.99/lb","B000YTXXDI",1],
-  ["p4","Organic Banana","$0.79/lb","B0787Y4V6T",1],
-  ["p5","Organic Sweet Potato","$2.99/lb","B07FZKXQT2",1],
-  ["p6","Organic Red Pear","$2.49/lb","B0787Y4DR1",1],
-  ["p7","Organic Red Seedless Grapes","$2.99/lb","",1],
-  ["p8","Organic Butternut Squash","$1.99/lb","B002QY3U5A",1],
-  ["p9","Organic White Peach","$4.99/lb","B003TQ8EPK",1],
-  ["p10","Organic Yellow Nectarine","$3.99/lb","B003TQ6IY4",1],
-  ["p11","Organic Blueberries, pint","$5.99","B077N7TR5G",1],
-  ["p12","Large Organic Hass Avocado","$2.99 each","B0014GLSE6",1],
-  ["p13","Organic Keitt Mango","$3.33 each","",1]]],
+  {id:"p1", n:"Organicgirl Baby Spinach, 5 oz", short:"Spinach", price:"$4.79", az:"", times:1, basic:1},
+  {id:"p2", n:"Organic Gold Kiwi, 1 lb", short:"Kiwi", price:"$6.99", az:"B079JMTDH4", times:1, basic:0},
+  {id:"p3", n:"Organic Fuji Apple", short:"Apples", price:"$2.99/lb", az:"B000YTXXDI", times:1, basic:1},
+  {id:"p4", n:"Organic Banana", short:"Bananas", price:"$0.79/lb", az:"B0787Y4V6T", times:1, basic:1},
+  {id:"p5", n:"Organic Sweet Potato", short:"Sweet potatoes", price:"$2.99/lb", az:"B07FZKXQT2", times:1, basic:0},
+  {id:"p6", n:"Organic Red Pear", short:"Pears", price:"$2.49/lb", az:"B0787Y4DR1", times:1, basic:0},
+  {id:"p7", n:"Organic Red Seedless Grapes", short:"Grapes", price:"$2.99/lb", az:"", times:1, basic:0},
+  {id:"p8", n:"Organic Butternut Squash", short:"Butternut squash", price:"$1.99/lb", az:"B002QY3U5A", times:1, basic:0},
+  {id:"p9", n:"Organic White Peach", short:"Peaches", price:"$4.99/lb", az:"B003TQ8EPK", times:1, basic:0},
+  {id:"p10", n:"Organic Yellow Nectarine", short:"Nectarines", price:"$3.99/lb", az:"B003TQ6IY4", times:1, basic:0},
+  {id:"p11", n:"Organic Blueberries, pint", short:"Blueberries", price:"$5.99", az:"B077N7TR5G", times:1, basic:1},
+  {id:"p12", n:"Large Organic Hass Avocado", short:"Avocados", price:"$2.99 each", az:"B0014GLSE6", times:1, basic:1},
+  {id:"p13", n:"Organic Keitt Mango", short:"Mangoes", price:"$3.33 each", az:"", times:1, basic:0}]],
  ["Protein",[
-  ["m1","Bell & Evans Organic Chicken Breast Tenderloin","$9.99/lb","B08538NWFT",1],
-  ["m2","Kochs Organic Ground Turkey, 16 oz","$8.49","B078DF8PZ8",1],
-  ["m3","Country Hen Organic Large Eggs, 6 ct","$5.99","B00G8UA91Q",1],
-  ["m4","Wellshire Uncured Turkey Bacon, 3 oz","$7.49","B074VBLKL9",1],
-  ["m5","Amylu Chicken Sausage Breakfast Patties, 12 oz","$6.99","B0DXVYNSCN",1],
-  ["m6","Mason Dixie Cheddar Sausage Breakfast Sandwich","$4.49 each","",1]]],
+  {id:"m1", n:"Bell & Evans Organic Chicken Breast Tenderloin", short:"Chicken", price:"$9.99/lb", az:"B08538NWFT", times:1, basic:1},
+  {id:"m2", n:"Kochs Organic Ground Turkey, 16 oz", short:"Ground turkey", price:"$8.49", az:"B078DF8PZ8", times:1, basic:1},
+  {id:"m3", n:"Country Hen Organic Large Eggs, 6 ct", short:"Eggs", price:"$5.99", az:"B00G8UA91Q", times:1, basic:1},
+  {id:"m4", n:"Wellshire Uncured Turkey Bacon, 3 oz", short:"Turkey bacon", price:"$7.49", az:"B074VBLKL9", times:1, basic:0},
+  {id:"m5", n:"Amylu Chicken Sausage Breakfast Patties, 12 oz", short:"Breakfast sausage", price:"$6.99", az:"B0DXVYNSCN", times:1, basic:0},
+  {id:"m6", n:"Mason Dixie Cheddar Sausage Breakfast Sandwich", short:"Breakfast sandwiches", price:"$4.49 each", az:"", times:1, basic:0}]],
  ["Dairy and cheese",[
-  ["d1","Fage Total 2% Greek Yogurt, 5.3 oz","$1.99 each","B000VR81IA",1],
-  ["d2","Icelandic Provisions Skyr, Strawberries & Cream","$2.09 each","B0CC43K5YZ",1],
-  ["d3","Whole Foods Organic Fresh Goat Cheese, 4 oz","$5.99","B074H64BVD",1],
-  ["d4","Tillamook Cheddar Bar, 8 oz","$5.29","B07PJTJW7H",1]]],
+  {id:"d1", n:"Fage Total 2% Greek Yogurt, 5.3 oz", short:"Greek yogurt", price:"$1.99 each", az:"B000VR81IA", times:1, basic:1},
+  {id:"d2", n:"Icelandic Provisions Skyr, Strawberries & Cream", short:"Skyr cups", price:"$2.09 each", az:"B0CC43K5YZ", times:1, basic:0},
+  {id:"d3", n:"Whole Foods Organic Fresh Goat Cheese, 4 oz", short:"Goat cheese", price:"$5.99", az:"B074H64BVD", times:1, basic:0},
+  {id:"d4", n:"Tillamook Cheddar Bar, 8 oz", short:"Cheddar", price:"$5.29", az:"B07PJTJW7H", times:1, basic:1}]],
  ["Frozen",[
-  ["f1","365 Organic Sweet Dark Cherries, 10 oz","$4.59","B074H57SNZ",1],
-  ["f2","365 Organic Sliced Peaches, 10 oz","$4.39","B074J5TWDV",1],
-  ["f3","Birch Benders Protein Toaster Waffles, 6 ct","$7.79","B09XYWQPWZ",1],
-  ["f4","365 Original Pancake Bites, 10.8 oz","$3.49","B07YHG39KZ",1]]],
+  {id:"f1", n:"365 Organic Sweet Dark Cherries, 10 oz", short:"Frozen cherries", price:"$4.59", az:"B074H57SNZ", times:1, basic:0},
+  {id:"f2", n:"365 Organic Sliced Peaches, 10 oz", short:"Frozen peaches", price:"$4.39", az:"B074J5TWDV", times:1, basic:0},
+  {id:"f3", n:"Birch Benders Protein Toaster Waffles, 6 ct", short:"Waffles", price:"$7.79", az:"B09XYWQPWZ", times:1, basic:1},
+  {id:"f4", n:"365 Original Pancake Bites, 10.8 oz", short:"Pancake bites", price:"$3.49", az:"B07YHG39KZ", times:1, basic:0}]],
  ["Pantry and bread",[
-  ["b1","Carbone Alfredo Pasta Sauce, 15 oz","$8.99","B0D82BQT4Q",1],
-  ["b2","Artisola Organic Portabella Mushroom Ravioli, 8 oz","$6.29","B078B9JPN3",1],
-  ["b3","365 Organic Black Beans, 15 oz","$1.59","B074H6QVKY",1],
-  ["b4","La Tortilla Factory Organic Tortillas, 6 ct","$4.99","",1],
-  ["b5","Whole Foods Ancient Grains Half Loaf","$2.99","",1],
-  ["b6","365 Organic Dark Maple Syrup, 12 fl oz","$6.99","B074H5CN2X",1],
-  ["b7","Aurora Organic Medjool Dates, 10 oz","$8.49","B079VRDC85",1],
-  ["b8","Lakewood Organic Pure Apple Juice, 32 oz","$8.99","B001BKNGHW",1],
-  ["b9","Whole Foods Chocolate Chip Mini Muffins, 12 ct","$5.49","B094JPCXC4",1]]]
+  {id:"b1", n:"Carbone Alfredo Pasta Sauce, 15 oz", short:"Alfredo sauce", price:"$8.99", az:"B0D82BQT4Q", times:1, basic:0},
+  {id:"b2", n:"Artisola Organic Portabella Mushroom Ravioli, 8 oz", short:"Mushroom ravioli", price:"$6.29", az:"B078B9JPN3", times:1, basic:0},
+  {id:"b3", n:"365 Organic Black Beans, 15 oz", short:"Black beans", price:"$1.59", az:"B074H6QVKY", times:1, basic:1},
+  {id:"b4", n:"La Tortilla Factory Organic Tortillas, 6 ct", short:"Tortillas", price:"$4.99", az:"", times:1, basic:1},
+  {id:"b5", n:"Whole Foods Ancient Grains Half Loaf", short:"Bread", price:"$2.99", az:"", times:1, basic:1},
+  {id:"b6", n:"365 Organic Dark Maple Syrup, 12 fl oz", short:"Maple syrup", price:"$6.99", az:"B074H5CN2X", times:1, basic:0},
+  {id:"b7", n:"Aurora Organic Medjool Dates, 10 oz", short:"Dates", price:"$8.49", az:"B079VRDC85", times:1, basic:0},
+  {id:"b8", n:"Lakewood Organic Pure Apple Juice, 32 oz", short:"Apple juice", price:"$8.99", az:"B001BKNGHW", times:1, basic:0},
+  {id:"b9", n:"Whole Foods Chocolate Chip Mini Muffins, 12 ct", short:"Mini muffins", price:"$5.49", az:"B094JPCXC4", times:1, basic:0}]]
 ];
 const LAST_ORDER = {
   placed:"2026-09-05", delivered:"2026-09-06",
@@ -272,30 +283,118 @@ const LAST_ORDER = {
        b1:1,b2:1,b3:1,b4:1,b5:1,b6:1,b7:1,b8:1,b9:1}
 };
 // ==== end DATA ====
-const NAMES = {}; ITEMS.forEach(([g,rows])=>rows.forEach(r=>NAMES[r[0]]=r[1]));
+
+const ROWS = []; ITEMS.forEach(([g,rows])=>rows.forEach(r=>ROWS.push(r)));
+const BY = {}; ROWS.forEach(r=>BY[r.id]=r);
+const NAMES = {}; ROWS.forEach(r=>NAMES[r.id]=r.n);
+const SHORT = id => (BY[id] && BY[id].short) || NAMES[id] || id;
 
 const KEY = "kitchen-list-v1";
-let S = load();
-function blank(){return {moods:[],weekText:"",daysText:"",days:{},picks:{},retired:[],newItems:[],out:[],tryList:[],prefs:[],prefsText:"",sentAt:null,weekStart:null,fromLast:null};}
+function blank(){return {moods:[],weekText:"",daysText:"",days:{},picks:{},retired:[],newItems:[],out:[],tryList:[],prefs:[],prefsText:"",sentAt:null,weekStart:null,startedFrom:null,seenOrder:null,touched:false,confirmed:false};}
 function load(){ try{const r=localStorage.getItem(KEY); if(r){return Object.assign(blank(),JSON.parse(r));}}catch(e){} return blank(); }
-let saveT; function save(){ try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){} const st=document.getElementById("status"); st.textContent="Saved on this phone"; metas(); if(typeof renderLast==="function") renderLast(); }
+let S = load();
+function write(){ try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){} }
+let saveT;
+function save(){ write(); const st=document.getElementById("status"); if(st) st.textContent="Saved on this phone"; metas(); renderCart(); }
+
+/* ---------- the pre-filled order ---------- */
+const today = new Date();
+const daysSince = iso => { const [y,m,d]=iso.split("-").map(Number); return Math.round((today - new Date(y,m-1,d)) / 86400000); };
+const staleGap = () => daysSince(LAST_ORDER.placed) > GAP_DAYS;
+
+function prefill(){
+  S.picks = {};
+  if (staleGap()){
+    ROWS.forEach(r=>{ if(r.basic && !S.retired.includes(r.id)) S.picks[r.id]="yes"; });
+    S.startedFrom = "basics";
+  } else {
+    Object.keys(LAST_ORDER.qty).forEach(id=>{ if(BY[id] && !S.retired.includes(id)) S.picks[id] = LAST_ORDER.qty[id]>1 ? "more" : "yes"; });
+    S.startedFrom = "last";
+  }
+  S.confirmed = false;
+}
+// A new order pushed by Eric starts a fresh round. Standing preferences survive it.
+if (S.seenOrder !== LAST_ORDER.placed){
+  const keepPrefs = S.prefs, keepPrefsText = S.prefsText, keepRetired = S.retired;
+  S = Object.assign(blank(), {prefs:keepPrefs, prefsText:keepPrefsText, retired:keepRetired});
+  S.seenOrder = LAST_ORDER.placed;
+  prefill(); write();
+}
+// She has not touched it yet, so keep the starting point honest as time passes.
+if (!S.touched){ const want = staleGap()?"basics":"last"; if (S.startedFrom !== want){ prefill(); write(); } }
+function touch(){ S.touched = true; S.confirmed = false; }
+
+const inIds  = () => ROWS.filter(r=>!S.retired.includes(r.id) && (S.picks[r.id]==="yes"||S.picks[r.id]==="more")).map(r=>r.id);
+const outIds = () => ROWS.filter(r=>!S.retired.includes(r.id) && S.picks[r.id]==="no").map(r=>r.id);
+const startIds = () => staleGap()
+  ? ROWS.filter(r=>r.basic && !S.retired.includes(r.id)).map(r=>r.id)
+  : Object.keys(LAST_ORDER.qty).filter(id=>BY[id] && !S.retired.includes(id));
+
+function renderCart(){
+  const ins = inIds(), outs = outIds();
+  const dropped = startIds().filter(id=>!ins.includes(id));
+  const added = ins.filter(id=>!startIds().includes(id));
+  const cart = document.getElementById("cart");
+  const basics = S.startedFrom === "basics";
+
+  document.getElementById("cartTitle").firstChild.nodeValue = basics ? "Here's a starting point" : "Here's the order";
+  document.getElementById("cartHint").textContent =
+    S.touched ? ins.length + " items going in."
+    : basics ? "It's been a while, so I just put the basics in. " + ins.length + " items."
+    : ins.length + " items, same as last time. Nothing to do if it looks right.";
+
+  const names = ins.map(SHORT);
+  document.getElementById("cartPreview").textContent = names.length
+    ? names.slice(0,5).join(", ") + (names.length>5 ? ", and " + (names.length-5) + " more" : "")
+    : "Nothing in it yet. Open Change something and pick what you want.";
+
+  const bits = [];
+  if (dropped.length) bits.push("took out " + dropped.length);
+  if (added.length) bits.push("added " + added.length);
+  if (S.newItems.length) bits.push(S.newItems.length + " new " + (S.newItems.length===1?"thing":"things"));
+  const ch = document.getElementById("cartChanged");
+  ch.textContent = bits.length ? "You " + bits.join(", ") + "." : "";
+  if (S.confirmed && !bits.length) ch.textContent = "";
+  ch.hidden = !bits.length;
+
+  const lg = document.getElementById("looksGood");
+  lg.setAttribute("aria-pressed", String(!!S.confirmed));
+  lg.textContent = S.confirmed ? "Looks good ✓" : "Looks good";
+  cart.classList.toggle("done", !!S.confirmed);
+  if (S.confirmed) document.getElementById("cartHint").textContent = "You're set. Hit Send to Eric down at the bottom.";
+  void outs;
+}
+
+document.getElementById("looksGood").addEventListener("click",()=>{
+  S.confirmed = !S.confirmed; write(); renderCart();
+  document.getElementById("status").textContent = S.confirmed ? "Ready. Hit Send to Eric." : "Saved on this phone";
+});
+document.getElementById("openList").addEventListener("click",()=>{
+  const f=document.getElementById("itemsFold"); f.open=true;
+  try{sessionStorage.setItem("open:itemsFold","1");}catch(e){}
+  f.scrollIntoView({behavior:"smooth",block:"start"});
+});
+
+/* ---------- folds ---------- */
 function metas(){
   const n=(id,t)=>{const e=document.getElementById(id); if(e) e.textContent=t;};
   const dayCount=Object.values(S.days||{}).filter(c=>c&&(c.breakfast||c.dinner)).length;
   n("daysMeta", dayCount?dayCount+(dayCount===1?" day set":" days set"):"optional");
-  const picks=Object.entries(S.picks||{}).filter(([id,v])=>v&&!S.retired.includes(id)).length;
-  n("itemsMeta", picks?picks+" picked":"optional");
+  const ins=inIds().length, outs=outIds().length;
+  n("itemsMeta", ins + " in" + (outs? ", " + outs + " out" : ""));
   const pf=(S.prefs||[]).length+((S.prefsText||"").trim()?1:0);
   n("prefsMeta", pf?"saved":"optional");
+  const fl=(S.out||[]).length+(S.tryList||[]).length;
+  n("flagsMeta", fl?fl+" noted":"optional");
 }
-["daysFold","lastFold","itemsFold","prefsFold"].forEach(id=>{const d=document.getElementById(id); if(!d) return; try{ if(sessionStorage.getItem("open:"+id)==="1") d.open=true; }catch(e){} d.addEventListener("toggle",()=>{ try{sessionStorage.setItem("open:"+id,d.open?"1":"0");}catch(e){} });});
+["itemsFold","flagsFold","daysFold","prefsFold","lastFold"].forEach(id=>{const d=document.getElementById(id); if(!d) return; try{ if(sessionStorage.getItem("open:"+id)==="1") d.open=true; }catch(e){} d.addEventListener("toggle",()=>{ try{sessionStorage.setItem("open:"+id,d.open?"1":"0");}catch(e){} });});
 
 const weekDays = (()=>{const out=[]; const d=new Date(); for(let i=0;i<7;i++){const x=new Date(d); x.setDate(d.getDate()+i); out.push(x);} return out;})();
-const fmtDay = d=>({dow:d.toLocaleDateString("en-US",{weekday:"short"}), md:(d.getMonth()+1)+"/"+d.getDate(), key:d.toISOString().slice(0,10)});
+const fmtDay = d=>({dow:d.toLocaleDateString("en-US",{weekday:"short"}), md:(d.getMonth()+1)+"/"+d.getDate(), key:[d.getFullYear(),String(d.getMonth()+1).padStart(2,"0"),String(d.getDate()).padStart(2,"0")].join("-")});
 const thisWeekKey = fmtDay(weekDays[0]).key;
 if (S.weekStart !== thisWeekKey) {
-  const keep = Object.fromEntries(Object.entries(S.days).filter(([k])=>k>=thisWeekKey));
-  S.days = keep; S.weekStart = thisWeekKey;
+  S.days = Object.fromEntries(Object.entries(S.days).filter(([k])=>k>=thisWeekKey));
+  S.weekStart = thisWeekKey; write();
 }
 
 function el(tag,attrs={},...kids){const e=document.createElement(tag); for(const [k,v] of Object.entries(attrs)){ if(k==="text") e.textContent=v; else if(k.startsWith("on")) e.addEventListener(k.slice(2),v); else e.setAttribute(k,v);} kids.forEach(k=>e.append(k)); return e;}
@@ -323,23 +422,24 @@ function renderItems(){
   const box=document.getElementById("items"); box.replaceChildren();
   const q=QUERY.trim().toLowerCase(); let shown=0;
   ITEMS.forEach(([group,rows])=>{
-    const sorted=rows.slice().sort((a,b)=>(b[4]||0)-(a[4]||0)||a[1].localeCompare(b[1]));
+    const sorted=rows.slice().sort((a,b)=>(b.times||0)-(a.times||0)||a.n.localeCompare(b.n));
     const g=el("div",{class:"group"},el("h3",{text:group})); let any=false;
-    sorted.forEach(([id,name,price,asin,n])=>{
-      if(q && !name.toLowerCase().includes(q)) return;
+    sorted.forEach(r=>{
+      const {id,n:name,price,az,times}=r;
+      if(q && !(name.toLowerCase().includes(q) || (r.short||"").toLowerCase().includes(q))) return;
       any=true; shown++;
       const retired=S.retired.includes(id); const pick=S.picks[id]||"";
-      const row=el("div",{class:"item"+(retired?" retired":"")});
+      const row=el("div",{class:"item"+(retired?" retired":"")+(pick==="no"?" out":"")});
       const left=el("div"); left.append(el("div",{class:"name",text:name}));
       const pr=el("div",{class:"price"}); pr.append(document.createTextNode(price));
-      if(asin){ pr.append(document.createTextNode("  ")); pr.append(el("a",{href:"https://www.amazon.com/dp/"+asin,target:"_blank",rel:"noopener",text:"see it"})); }
-      if(n>1){ pr.append(document.createTextNode("  ")); pr.append(el("span",{class:"count",text:"ordered "+n+"x"})); }
+      if(az){ pr.append(document.createTextNode("  ")); pr.append(el("a",{href:"https://www.amazon.com/dp/"+az,target:"_blank",rel:"noopener",text:"see it"})); }
+      if(times>1){ pr.append(document.createTextNode("  ")); pr.append(el("span",{class:"count",text:"ordered "+times+"x"})); }
       left.append(pr);
       const seg=el("div",{class:"seg",role:"group","aria-label":"Choose for "+name});
-      [["no","No"],["yes","Yes"],["more","Extra"]].forEach(([v,t])=>{
-        seg.append(el("button",{type:"button",class:v,"aria-pressed":String(pick===v),text:t,onclick:()=>{ S.picks[id]=(pick===v?"":v); save(); renderItems(); }}));
+      [["no","Skip"],["yes","In"],["more","×2"]].forEach(([v,t])=>{
+        seg.append(el("button",{type:"button",class:v,"aria-pressed":String(pick===v),text:t,onclick:()=>{ S.picks[id]=(pick===v?"":v); touch(); save(); renderItems(); }}));
       });
-      const tiny=el("button",{class:"tiny",type:"button",text:retired?"bring it back":"done with this one",onclick:()=>{ S.retired=retired?S.retired.filter(x=>x!==id):[...S.retired,id]; if(!retired) delete S.picks[id]; save(); renderItems(); }});
+      const tiny=el("button",{class:"tiny",type:"button",text:retired?"bring it back":"stop buying this",onclick:()=>{ S.retired=retired?S.retired.filter(x=>x!==id):[...S.retired,id]; if(!retired) delete S.picks[id]; touch(); save(); renderItems(); renderLast(); }});
       row.append(left,retired?el("span"):seg,tiny);
       g.append(row);
     });
@@ -347,64 +447,73 @@ function renderItems(){
   });
   if(q && !shown){
     const raw=QUERY.trim();
-    box.append(el("div",{class:"empty"},el("span",{text:"Nothing called \u201c"+raw+"\u201d on the list."}),
-      el("button",{class:"btn",type:"button",text:"Add \u201c"+raw+"\u201d to the order",onclick:()=>{ S.newItems.push(raw); save(); renderList("newItems","newItems"); setQuery(""); document.getElementById("status").textContent="Added. It\u2019s under Add something."; }})));
+    box.append(el("div",{class:"empty"},el("span",{text:"Nothing called “"+raw+"” on the list."}),
+      el("button",{class:"btn",type:"button",text:"Add “"+raw+"” to the order",onclick:()=>{ S.newItems.push(raw); touch(); save(); renderList("newItems","newItems"); setQuery(""); document.getElementById("status").textContent="Added. It’s up under Want anything added."; }})));
   }
 }
 function setQuery(v){ QUERY=v; const inp=document.getElementById("itemSearch"); if(inp.value!==v) inp.value=v; document.getElementById("itemSearchClear").hidden=!v; renderItems(); }
+document.getElementById("itemSearch").addEventListener("input",e=>setQuery(e.target.value));
+document.getElementById("itemSearchClear").addEventListener("click",()=>{setQuery(""); document.getElementById("itemSearch").focus();});
 
 const fmtLong=k=>{const [y,m,d]=k.split("-").map(Number); return new Date(y,m-1,d).toLocaleDateString("en-US",{weekday:"short",month:"short",day:"numeric"});};
 function renderLast(){
   const ids=Object.keys(LAST_ORDER.qty).filter(id=>NAMES[id]);
   const units=ids.reduce((a,id)=>a+LAST_ORDER.qty[id],0);
-  document.getElementById("lastMeta").textContent=fmtLong(LAST_ORDER.placed).replace(/^\w+, /,"")+" \u00b7 "+ids.length+" items";
+  document.getElementById("lastMeta").textContent=fmtLong(LAST_ORDER.placed).replace(/^\w+, /,"")+" · "+ids.length+" items";
   document.getElementById("lastHint").textContent="Ordered "+fmtLong(LAST_ORDER.placed)+", delivered "+fmtLong(LAST_ORDER.delivered)+". "+ids.length+" items, "+units+" in all.";
   const ul=document.getElementById("lastList"); ul.replaceChildren();
   ids.sort((a,b)=>NAMES[a].localeCompare(NAMES[b])).forEach(id=>{
-    const li=el("li",{},el("span",{text:NAMES[id]}),el("b",{text:"\u00d7 "+LAST_ORDER.qty[id]}));
+    const li=el("li",{},el("span",{text:NAMES[id]}),el("b",{text:"× "+LAST_ORDER.qty[id]}));
     if(S.retired.includes(id)) li.style.opacity=".55";
     ul.append(li);
   });
-  const allSet=ids.filter(id=>!S.retired.includes(id)).every(id=>S.picks[id]===(LAST_ORDER.qty[id]>1?"more":"yes"));
-  const b=document.getElementById("sameAgain"); b.textContent=allSet?"Clear those picks":"Same as last time"; b.classList.toggle("primary",!allSet);
 }
-document.getElementById("sameAgain").addEventListener("click",()=>{
-  const ids=Object.keys(LAST_ORDER.qty).filter(id=>NAMES[id]&&!S.retired.includes(id));
-  const allSet=ids.every(id=>S.picks[id]===(LAST_ORDER.qty[id]>1?"more":"yes"));
-  if(allSet){ ids.forEach(id=>delete S.picks[id]); S.fromLast=null; document.getElementById("status").textContent="Cleared."; }
-  else { ids.forEach(id=>S.picks[id]=LAST_ORDER.qty[id]>1?"more":"yes"); S.fromLast=LAST_ORDER.placed; document.getElementById("status").textContent="Marked "+ids.length+" items Yes. Flip any you don\u2019t want."; }
-  try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}
-  metas(); renderItems(); renderLast();
-});
-document.getElementById("itemSearch").addEventListener("input",e=>setQuery(e.target.value));
-document.getElementById("itemSearchClear").addEventListener("click",()=>{setQuery(""); document.getElementById("itemSearch").focus();});
 
 function renderList(ulId,field){
   const ul=document.getElementById(ulId); ul.replaceChildren();
-  S[field].forEach((t,i)=>ul.append(el("li",{},el("span",{text:t}),el("button",{class:"tiny",type:"button",text:"remove",onclick:()=>{S[field].splice(i,1);save();renderList(ulId,field);}}))));
+  S[field].forEach((t,i)=>ul.append(el("li",{},el("span",{text:t}),el("button",{class:"tiny",type:"button",text:"remove",onclick:()=>{S[field].splice(i,1);touch();save();renderList(ulId,field);}}))));
 }
 function wireAdd(inputId,btnId,ulId,field){
-  const inp=document.getElementById(inputId); const add=()=>{const v=inp.value.trim(); if(!v) return; S[field].push(v); inp.value=""; save(); renderList(ulId,field);};
+  const inp=document.getElementById(inputId); const add=()=>{const v=inp.value.trim(); if(!v) return; S[field].push(v); inp.value=""; touch(); save(); renderList(ulId,field);};
   document.getElementById(btnId).addEventListener("click",add);
   inp.addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();add();}});
   renderList(ulId,field);
 }
 function wireText(id,field){const t=document.getElementById(id); t.value=S[field]||""; t.addEventListener("input",()=>{S[field]=t.value; clearTimeout(saveT); saveT=setTimeout(save,300);});}
 
+/* ---------- what Eric gets ---------- */
 function summary(){
   const L=[]; const wk=fmtDay(weekDays[0]);
+  const ins=inIds(), outs=outIds(), start=startIds();
+  const dropped=start.filter(id=>!ins.includes(id));
+  const added=ins.filter(id=>!start.includes(id));
   L.push("Kitchen List, week of "+wk.dow+" "+wk.md); L.push("");
+  L.push("STARTED FROM");
+  L.push(S.startedFrom==="basics" ? "The basics, "+start.length+" items." : "The last order ("+LAST_ORDER.placed+"), "+start.length+" items.");
+  L.push("");
+  L.push("MELISSA'S CALL");
+  if(S.confirmed && !dropped.length && !added.length && !S.newItems.length) L.push("Looked it over. No changes.");
+  else{
+    const bits=[];
+    if(dropped.length) bits.push("took out "+dropped.length);
+    if(added.length) bits.push("added "+added.length+" off the list");
+    if(S.newItems.length) bits.push("wrote in "+S.newItems.length+" new "+(S.newItems.length===1?"thing":"things"));
+    const line = bits.length ? bits.join(", ") + "." : "Left it as-is, did not confirm.";
+    L.push(line.charAt(0).toUpperCase() + line.slice(1));
+    if(S.confirmed) L.push("Marked it looks good.");
+  }
+  L.push("");
   if(S.moods.length){L.push("THIS WEEK FEELS LIKE"); L.push(S.moods.join(", ")); L.push("");}
   if(S.weekText.trim()){L.push("WHAT SOUNDS GOOD THIS WEEK"); L.push(S.weekText.trim()); L.push("");}
   if(S.daysText.trim()){L.push("NEXT FEW DAYS"); L.push(S.daysText.trim()); L.push("");}
   const dayLines=weekDays.map(d=>{const {dow,md,key}=fmtDay(d); const c=S.days[key]||{}; if(!c.breakfast&&!c.dinner) return null; return dow+" "+md+": breakfast "+(c.breakfast||"open")+", dinner "+(c.dinner||"open");}).filter(Boolean);
   if(dayLines.length){L.push("DAY BY DAY"); L.push(...dayLines); L.push("");}
-  if(S.fromLast){L.push("Started from the last order ("+S.fromLast+"), then adjusted."); L.push("");}
-  const by={yes:[],more:[],no:[]}; Object.entries(S.picks).forEach(([id,v])=>{ if(v&&NAMES[id]&&!S.retired.includes(id)) by[v].push(NAMES[id]); });
-  if(by.yes.length){L.push("YES"); L.push(...by.yes.map(x=>"- "+x)); L.push("");}
-  if(by.more.length){L.push("EXTRA"); L.push(...by.more.map(x=>"- "+x)); L.push("");}
-  if(by.no.length){L.push("NO THIS TIME"); L.push(...by.no.map(x=>"- "+x)); L.push("");}
-  if(S.retired.length){L.push("DONE WITH THESE"); L.push(...S.retired.map(id=>"- "+NAMES[id]).filter(Boolean)); L.push("");}
+  const yes=ins.filter(id=>S.picks[id]==="yes").map(id=>NAMES[id]);
+  const more=ins.filter(id=>S.picks[id]==="more").map(id=>NAMES[id]);
+  if(yes.length){L.push("YES"); L.push(...yes.map(x=>"- "+x)); L.push("");}
+  if(more.length){L.push("EXTRA"); L.push(...more.map(x=>"- "+x)); L.push("");}
+  if(outs.length){L.push("NO THIS TIME"); L.push(...outs.map(id=>NAMES[id]).map(x=>"- "+x)); L.push("");}
+  if(S.retired.length){L.push("DONE WITH THESE"); L.push(...S.retired.map(id=>NAMES[id]).filter(Boolean).map(x=>"- "+x)); L.push("");}
   if(S.newItems.length){L.push("ADD"); L.push(...S.newItems.map(x=>"- "+x)); L.push("");}
   if(S.out.length){L.push("WE'RE OUT OF"); L.push(...S.out.map(x=>"- "+x)); L.push("");}
   if(S.tryList.length){L.push("WANT TO TRY"); L.push(...S.tryList.map(x=>"- "+x)); L.push("");}
@@ -430,7 +539,7 @@ document.getElementById("copy").addEventListener("click",async()=>{
 
 renderChips("moods",MOODS,"moods");
 renderChips("prefs",PREFS,"prefs");
-renderDays(); renderItems(); renderLast();
+renderDays(); renderItems(); renderLast(); renderCart();
 wireAdd("newItem","addItem","newItems","newItems");
 wireAdd("outItem","addOut","outItems","out");
 wireAdd("tryItem","addTry","tryItems","tryList");
